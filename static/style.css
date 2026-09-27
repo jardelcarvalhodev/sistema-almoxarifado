@@ -1,0 +1,15 @@
+body {
+    background-color: #9c9df8;
+    padding: 30px;
+    }
+
+    h1 {
+        color: #1e3a8a
+    }
+
+    .botao {
+        background-color: #2563eb;
+        color: white;
+        margin: 10px;
+        padding: 10px 20px;
+    }
