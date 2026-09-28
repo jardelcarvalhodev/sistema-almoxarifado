@@ -11,7 +11,9 @@ def inicio():
 def cadastrar():
 
     if request.method == "POST":
-        print("Formulário enviado!")
+        nome = request.form["nome"]
+        print(nome)
+        codigo = request.form["codigo"]
 
     return render_template("cadastro.html")
 
