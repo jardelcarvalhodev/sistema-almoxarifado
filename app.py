@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sqlite3
 
 app = Flask(__name__)
@@ -61,6 +61,22 @@ def estoque():
     conexao.close()
 
     return render_template("estoque.html", produtos=produtos)
+
+@app.route("/excluir/<int:id>", methods=["POST"])
+def excluir(id):
+    conexao = sqlite3.connect("estoque.db")
+    cursor = conexao.cursor()
+
+    cursor.execute("DELETE FROM produtos WHERE id = ?", (id,))
+
+    conexao.commit()
+    conexao.close()
+
+    return redirect("/estoque")
+
+@app.route("/entrada", methods=["GET", "POST"])
+def entrada():
+    return render_template("entrada.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

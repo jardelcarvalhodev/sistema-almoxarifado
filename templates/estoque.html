@@ -10,6 +10,39 @@
 
     <h1>Estoque de Produtos</h1>
 
+    <table border="1">
+
+        <tr>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Código</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+        </tr>
+
+        {% for produto in produtos %}
+        <tr>
+            <td>{{ produto[0] }}</td>
+            <td>{{ produto[1] }}</td>
+            <td>{{ produto[2] }}</td>
+            <td>{{ produto[3] }}</td>
+
+            <td>
+
+                <form method="GET" action="/editar/{{ produto[0] }}" style="display:inline;">
+                    <button type="submit">Editar</button>
+                </form>
+
+                <form method="POST" action="/excluir/{{ produto[0] }}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
+                    <button type="submit">Excluir</button>
+                </form>
+
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
 </body>
 
 </html>
