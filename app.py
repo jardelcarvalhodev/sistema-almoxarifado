@@ -76,7 +76,59 @@ def excluir(id):
 
 @app.route("/entrada", methods=["GET", "POST"])
 def entrada():
+    if request.method == "POST":
+        codigo = request.form["codigo"]
+        quantidade = int(request.form["quantidade"])
+
+        conexao = sqlite3.connect("estoque.db")
+        cursor = conexao.cursor()
+
+        cursor.execute(
+            "SELECT * FROM produtos WHERE codigo = ?",
+            (codigo,)
+        )
+
+        produto = cursor.fetchone()
+
+        if produto:
+            cursor.execute(
+                "UPDATE produtos SET quantidade = quantidade + ? WHERE codigo = ?",
+                (quantidade, codigo)
+            )
+
+            conexao.commit()
+
+        else:
+            conexao.close()
+            return "Produto não encontrado. Cadastre o produto primeiro."
+
+        conexao.close()
+
+        return redirect("/estoque")
+
     return render_template("entrada.html")
+
+@app.route("/saida", methods=["GET", "POST"])
+def saida():
+    if request.method == "POST":
+        codigo = request.form["codigo"]
+        quantidade = int(request.form["quantidade"])
+
+        conexao = sqlite3.connect("estoque.db")
+        cursor = conexao.cursor()
+
+        cursor.execute(
+            "SELECT * FROM produtos WHERE codigo = ?",
+            (codigo,)
+        )
+
+        produto = cursor.fetchone()
+
+        conexao.close()
+
+        return "Produto encontrado!" if produto else "Produto não encontrado!"
+
+    return render_template("saida.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
