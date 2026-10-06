@@ -1,23 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Almoxarifado</title>
+
+    <title>Kaiko - Sistema de Estoque</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <h1>Sistema de Almoxarifado</h1>
+    <div class="pagina">
 
-    <p>Bem-vindo ao sistema!</p>
+        <img src="{{ url_for('static', filename='logo_kaiko.png') }}"
+             class="logo"
+             alt="Kaiko">
 
-    <button class="botao">Cadastrar Produto</button>
-    <button class="botao">Entrada de Material</button>
-    <button class="botao">Saída de Material</button>
-    <button class="botao">Consultar Estoque</button>
+        <div class="painel">
+
+            <h1>Bem-vindo ao <span>sistema!</span></h1>
+
+            <p>Gerencie o seu almoxarifado de forma simples, rápida e organizada.</p>
+
+            <div class="botoes">
+
+                <a href="/cadastrar" class="botao cadastrar">
+                    <span class="icone">📦</span>
+                    <span>Cadastrar<br>Produto</span>
+                    <strong>›</strong>
+                </a>
+
+                <a href="/fornecedor" class="botao fornecedor">
+                    <span class="icone">🏢</span>
+                    <span>Cadastrar<br>Fornecedor</span>
+                    <strong>›</strong>
+                </a>
+
+                <a href="/entrada" class="botao entrada">
+                    <span class="icone">📄</span>
+                    <span>Entrada de<br>Material</span>
+                    <strong>›</strong>
+                </a>
+
+                <a href="/saida" class="botao saida">
+                    <span class="icone">📄</span>
+                    <span>Saída de<br>Material</span>
+                    <strong>›</strong>
+                </a>
+
+                <a href="/estoque" class="botao estoque">
+                    <span class="icone">🔍</span>
+                    <span>Consultar<br>Estoque</span>
+                    <strong>›</strong>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
+
 </html>

@@ -3,28 +3,239 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Entrada de Material</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Entrada de Material - Kaiko</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <h1>Entrada de Material</h1>
+    <div class="pagina-entrada">
 
-    <form method="POST" action="/entrada">
+        <!-- MENU SUPERIOR -->
 
-        <label>Código do produto:</label>
-        <input type="text" name="codigo">
+        <header class="menu">
 
-        <br><br>
+            <a href="/" class="logo-menu">
+                <img src="{{ url_for('static', filename='logo_kaiko.png') }}" alt="Kaiko">
+            </a>
 
-        <label>Quantidade de entrada:</label>
-        <input type="number" name="quantidade">
+            <nav>
 
-        <br><br>
+                <a href="/cadastrar">📦 Cadastrar Produto</a>
 
-        <button type="submit">Registrar Entrada</button>
+                <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
 
-    </form>
+                <a href="/entrada">📄 Entrada de Material</a>
+
+                <a href="/saida">📄 Saída de Material</a>
+
+                <a href="/estoque">🔍 Consultar Estoque</a>
+
+            </nav>
+
+        </header>
+
+
+        <!-- ÁREA DA ENTRADA -->
+
+        <main class="entrada-container">
+
+            <div class="entrada-card">
+
+
+                <!-- TÍTULO -->
+
+                <div class="entrada-titulo">
+
+                    <span>📄</span>
+
+                    <div>
+
+                        <h1>Entrada de Material</h1>
+
+                        <p>
+                            Registre a movimentação de entrada de produtos no almoxarifado.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORMULÁRIO -->
+
+                <form method="POST" action="/entrada">
+
+
+                    <!-- PRIMEIRA LINHA -->
+
+                    <div class="linha-entrada">
+
+
+                        <div class="campo">
+
+                            <label for="data">
+                                Data da Entrada <span>*</span>
+                            </label>
+
+                            <input
+                                type="date"
+                                id="data"
+                                name="data"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="codigo">
+                                Produto <span>*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="codigo"
+                                name="codigo"
+                                placeholder="Digite o código do produto"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="quantidade">
+                                Quantidade <span>*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantidade"
+                                name="quantidade"
+                                placeholder="Digite a quantidade"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- SEGUNDA LINHA -->
+
+                    <div class="linha-entrada">
+
+
+                        <div class="campo">
+
+                            <label for="fornecedor">
+                                Fornecedor
+                            </label>
+
+                            <select name="fornecedor">
+    <option value="">Selecione o fornecedor</option>
+
+    {% for fornecedor in fornecedores %}
+        <option value="{{ fornecedor[0] }}">
+            {{ fornecedor[1] }}
+        </option>
+    {% endfor %}
+
+</select>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="nota_fiscal">
+                                Número da Nota Fiscal
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nota_fiscal"
+                                name="nota_fiscal"
+                                placeholder="Digite o número da nota (opcional)"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="valor">
+                                Valor Total (R$) <span>*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="valor"
+                                name="valor"
+                                placeholder="Ex: 0,00"
+                                step="0.01"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- OBSERVAÇÕES -->
+
+                    <div class="campo campo-observacoes">
+
+                        <label for="observacoes">
+                            Observações
+                        </label>
+
+                        <textarea
+                            id="observacoes"
+                            name="observacoes"
+                            placeholder="Digite observações (opcional)"
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- BOTÕES -->
+
+                    <div class="acoes-entrada">
+
+                        <button
+                            type="submit"
+                            class="btn-registrar-entrada"
+                        >
+                            💾 Registrar Entrada
+                        </button>
+
+                        <button
+                            type="reset"
+                            class="btn-limpar-entrada"
+                        >
+                            🔄 Limpar Campos
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </main>
+
+    </div>
 
 </body>
 

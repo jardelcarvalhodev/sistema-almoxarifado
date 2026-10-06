@@ -16,6 +16,16 @@ def criar_banco():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS fornecedores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            cnpj TEXT,
+            telefone TEXT,
+            email TEXT
+        )
+    """)
+
     conexao.commit()
     conexao.close()
 
@@ -106,7 +116,16 @@ def entrada():
 
         return redirect("/estoque")
 
-    return render_template("entrada.html")
+        conexao = sqlite3.connect("estoque.db")
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT * FROM fornecedores ORDER BY nome")
+
+    fornecedores = cursor.fetchall()
+
+    conexao.close()
+
+    return render_template("entrada.html", fornecedores=fornecedores)
 
 @app.route("/saida", methods=["GET", "POST"])
 def saida():
@@ -124,11 +143,58 @@ def saida():
 
         produto = cursor.fetchone()
 
-        conexao.close()
+        if produto:
+            if quantidade <= produto[3]:
+                nova_quantidade = produto[3] - quantidade
 
-        return "Produto encontrado!" if produto else "Produto não encontrado!"
+                cursor.execute(
+                    "UPDATE produtos SET quantidade = ? WHERE codigo = ?",
+                    (nova_quantidade, codigo)
+                )
+
+                conexao.commit()
+
+                conexao.close()
+
+                return redirect("/estoque")
+
+            else:
+                conexao.close()
+                return "Estoque insuficiente!"
+
+        else:
+            conexao.close()
+            return "Produto não encontrado!"
 
     return render_template("saida.html")
+
+@app.route("/fornecedor", methods=["GET", "POST"])
+def fornecedor():
+
+    if request.method == "POST":
+
+        nome = request.form["nome"]
+        cnpj = request.form["cnpj"]
+        telefone = request.form["telefone"]
+        email = request.form["email"]
+
+        conexao = sqlite3.connect("estoque.db")
+        cursor = conexao.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO fornecedores (nome, cnpj, telefone, email)
+            VALUES (?, ?, ?, ?)
+            """,
+            (nome, cnpj, telefone, email)
+        )
+
+        conexao.commit()
+        conexao.close()
+
+        return redirect("/fornecedor")
+
+    return render_template("fornecedor.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
