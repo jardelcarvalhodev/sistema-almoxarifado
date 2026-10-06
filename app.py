@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -23,6 +24,20 @@ def criar_banco():
             cnpj TEXT,
             telefone TEXT,
             email TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS movimentacoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            produto_id INTEGER NOT NULL,
+            tipo TEXT NOT NULL,
+            quantidade INTEGER NOT NULL,
+            data TEXT NOT NULL,
+            destino TEXT,
+            responsavel TEXT,
+            requisicao TEXT,
+            observacoes TEXT
         )
     """)
 
@@ -86,6 +101,7 @@ def excluir(id):
 
 @app.route("/entrada", methods=["GET", "POST"])
 def entrada():
+
     if request.method == "POST":
         codigo = request.form["codigo"]
         quantidade = int(request.form["quantidade"])
@@ -107,29 +123,40 @@ def entrada():
             )
 
             conexao.commit()
+            conexao.close()
+
+            return redirect("/estoque")
 
         else:
             conexao.close()
             return "Produto não encontrado. Cadastre o produto primeiro."
 
-        conexao.close()
-
-        return redirect("/estoque")
-
-        conexao = sqlite3.connect("estoque.db")
+    conexao = sqlite3.connect("estoque.db")
     cursor = conexao.cursor()
 
-    cursor.execute("SELECT * FROM fornecedores ORDER BY nome")
+    cursor.execute(
+        "SELECT * FROM fornecedores ORDER BY nome"
+    )
 
     fornecedores = cursor.fetchall()
 
     conexao.close()
 
-    return render_template("entrada.html", fornecedores=fornecedores)
+    return render_template(
+        "entrada.html",
+        fornecedores=fornecedores
+    )
 
 @app.route("/saida", methods=["GET", "POST"])
 def saida():
+
+    produto = None
+    mensagem = None
+    confirmacao = False
+    quantidade = 0
+
     if request.method == "POST":
+
         codigo = request.form["codigo"]
         quantidade = int(request.form["quantidade"])
 
@@ -143,30 +170,55 @@ def saida():
 
         produto = cursor.fetchone()
 
-        if produto:
-            if quantidade <= produto[3]:
-                nova_quantidade = produto[3] - quantidade
+        if not produto:
 
-                cursor.execute(
-                    "UPDATE produtos SET quantidade = ? WHERE codigo = ?",
-                    (nova_quantidade, codigo)
-                )
+            mensagem = "Produto não encontrado!"
 
-                conexao.commit()
+        elif quantidade > produto[3]:
 
-                conexao.close()
+            mensagem = (
+                f"Estoque insuficiente! "
+                f"Existem apenas {produto[3]} unidades disponíveis."
+            )
 
-                return redirect("/estoque")
+        elif request.form.get("confirmar") == "sim":
 
-            else:
-                conexao.close()
-                return "Estoque insuficiente!"
+            nova_quantidade = produto[3] - quantidade
+
+            cursor.execute(
+                "UPDATE produtos SET quantidade = ? WHERE id = ?",
+                (nova_quantidade, produto[0])
+            )
+
+            data = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+            cursor.execute(
+                """
+                INSERT INTO movimentacoes
+                (produto_id, tipo, quantidade, data)
+                VALUES (?, ?, ?, ?)
+                """,
+                (produto[0], "SAÍDA", quantidade, data)
+            )
+
+            conexao.commit()
+            conexao.close()
+
+            return redirect("/estoque")
 
         else:
-            conexao.close()
-            return "Produto não encontrado!"
 
-    return render_template("saida.html")
+            confirmacao = True
+
+        conexao.close()
+
+    return render_template(
+        "saida.html",
+        produto=produto,
+        mensagem=mensagem,
+        confirmacao=confirmacao,
+        quantidade=quantidade
+    )
 
 @app.route("/fornecedor", methods=["GET", "POST"])
 def fornecedor():
@@ -195,6 +247,21 @@ def fornecedor():
         return redirect("/fornecedor")
 
     return render_template("fornecedor.html")
+
+@app.route("/relatorio-fornecedores")
+def relatorio_fornecedores():
+    conexao = sqlite3.connect("estoque.db")
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT * FROM fornecedores ORDER BY nome")
+    fornecedores = cursor.fetchall()
+
+    conexao.close()
+
+    return render_template(
+        "relatorio_fornecedores.html",
+        fornecedores=fornecedores
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

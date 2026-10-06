@@ -13,7 +13,12 @@
     <form method="POST" action="/saida">
 
         <label>Código do produto:</label>
-        <input type="text" name="codigo">
+        <input
+    type="text"
+    name="codigo"
+    placeholder="Digite o código do produto"
+    required
+>
 
         <br><br>
 
@@ -26,6 +31,80 @@
 
     </form>
 
-</body>
+    {% if confirmacao %}
 
-</html>
+<div class="confirmacao-saida">
+
+    <h2>🟠 Confirmar saída?</h2>
+
+    <p>
+        Você está prestes a retirar este material do estoque.
+    </p>
+
+    <div class="resumo-saida">
+
+        <div>
+            <span>Produto</span>
+            <strong>{{ produto[1] }}</strong>
+        </div>
+
+        <div>
+            <span>Código</span>
+            <strong>{{ produto[2] }}</strong>
+        </div>
+
+        <div>
+            <span>Quantidade da saída</span>
+            <strong>{{ quantidade }} unidades</strong>
+        </div>
+
+        <div>
+            <span>Estoque após a saída</span>
+            <strong>{{ produto[3] - quantidade }} unidades</strong>
+        </div>
+
+    </div>
+
+    <div class="acoes-confirmacao">
+
+        <form method="POST" action="/saida">
+
+            <input
+                type="hidden"
+                name="codigo"
+                value="{{ produto[2] }}"
+            >
+
+            <input
+                type="hidden"
+                name="quantidade"
+                value="{{ quantidade }}"
+            >
+
+            <input
+                type="hidden"
+                name="confirmar"
+                value="sim"
+            >
+
+            <button
+                type="submit"
+                class="btn-confirmar-saida"
+            >
+                ✓ Confirmar Saída
+            </button>
+
+        </form>
+
+        <a
+            href="/saida"
+            class="btn-cancelar-saida"
+        >
+            ✕ Cancelar
+        </a>
+
+    </div>
+
+</div>
+
+{% endif %}
