@@ -19,7 +19,10 @@
         <header class="menu">
 
             <a href="/" class="logo-menu">
-                <img src="{{ url_for('static', filename='logo_kaiko.png') }}" alt="Kaiko">
+                <img
+                    src="{{ url_for('static', filename='logo_kaiko.png') }}"
+                    alt="Kaiko"
+                >
             </a>
 
             <nav>
@@ -94,7 +97,7 @@
                         <div class="campo">
 
                             <label for="codigo">
-                                Produto <span>*</span>
+                                Código do Produto <span>*</span>
                             </label>
 
                             <input
@@ -103,6 +106,23 @@
                                 name="codigo"
                                 placeholder="Digite o código do produto"
                                 required
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="nome_produto">
+                                Produto
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nome_produto"
+                                name="nome_produto"
+                                placeholder="O nome do produto aparecerá aqui"
+                                readonly
                             >
 
                         </div>
@@ -140,16 +160,24 @@
                                 Fornecedor
                             </label>
 
-                            <select name="fornecedor">
-    <option value="">Selecione o fornecedor</option>
+                            <select
+                                id="fornecedor"
+                                name="fornecedor"
+                            >
 
-    {% for fornecedor in fornecedores %}
-        <option value="{{ fornecedor[0] }}">
-            {{ fornecedor[1] }}
-        </option>
-    {% endfor %}
+                                <option value="">
+                                    Selecione o fornecedor
+                                </option>
 
-</select>
+                                {% for fornecedor in fornecedores %}
+
+                                    <option value="{{ fornecedor[0] }}">
+                                        {{ fornecedor[1] }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
 
                         </div>
 
@@ -165,6 +193,23 @@
                                 id="nota_fiscal"
                                 name="nota_fiscal"
                                 placeholder="Digite o número da nota (opcional)"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="lote">
+                                Lote <span>*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="lote"
+                                name="lote"
+                                placeholder="Digite o lote do produto"
+                                required
                             >
 
                         </div>
@@ -236,6 +281,42 @@
         </main>
 
     </div>
+
+    <script>
+
+    const campoCodigo = document.getElementById("codigo");
+    const campoNome = document.getElementById("nome_produto");
+
+    campoCodigo.addEventListener("input", function () {
+
+        const codigo = campoCodigo.value.trim();
+
+        if (codigo === "") {
+            campoNome.value = "";
+            return;
+        }
+
+        fetch(`/buscar-produto?codigo=${encodeURIComponent(codigo)}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.encontrado) {
+                    campoNome.value = data.nome;
+                } else {
+                    campoNome.value = "Produto não encontrado";
+                }
+
+            })
+            .catch(error => {
+
+                console.error("Erro ao buscar produto:", error);
+                campoNome.value = "";
+
+            });
+
+    });
+
+</script>
 
 </body>
 

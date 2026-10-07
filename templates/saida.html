@@ -2,109 +2,319 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>Saída de Material</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Saída de Material - Kaiko</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 
 <body>
 
-    <h1>Saída de Material</h1>
+    <div class="pagina-entrada">
 
-    <form method="POST" action="/saida">
+        <header class="menu">
 
-        <label>Código do produto:</label>
-        <input
-    type="text"
-    name="codigo"
-    placeholder="Digite o código do produto"
-    required
->
+            <a href="/" class="logo-menu">
+                <img
+                    src="{{ url_for('static', filename='logo_kaiko.png') }}"
+                    alt="Kaiko"
+                >
+            </a>
 
-        <br><br>
+            <nav>
 
-        <label>Quantidade de saída:</label>
-        <input type="number" name="quantidade">
+                <a href="/cadastrar">📦 Cadastrar Produto</a>
 
-        <br><br>
+                <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
 
-        <button type="submit">Registrar Saída</button>
+                <a href="/entrada">📄 Entrada de Material</a>
 
-    </form>
+                <a href="/saida">📄 Saída de Material</a>
 
-    {% if confirmacao %}
+                <a href="/estoque">🔍 Consultar Estoque</a>
 
-<div class="confirmacao-saida">
+            </nav>
 
-    <h2>🟠 Confirmar saída?</h2>
+        </header>
 
-    <p>
-        Você está prestes a retirar este material do estoque.
-    </p>
 
-    <div class="resumo-saida">
+        <main class="entrada-container">
 
-        <div>
-            <span>Produto</span>
-            <strong>{{ produto[1] }}</strong>
-        </div>
+            <div class="entrada-card">
 
-        <div>
-            <span>Código</span>
-            <strong>{{ produto[2] }}</strong>
-        </div>
 
-        <div>
-            <span>Quantidade da saída</span>
-            <strong>{{ quantidade }} unidades</strong>
-        </div>
+                <div class="saida-cabecalho">
 
-        <div>
-            <span>Estoque após a saída</span>
-            <strong>{{ produto[3] - quantidade }} unidades</strong>
-        </div>
+                    <div class="saida-icone">
+                        📄
+                    </div>
 
-    </div>
+                    <div>
 
-    <div class="acoes-confirmacao">
+                        <h1>Saída de Material</h1>
 
-        <form method="POST" action="/saida">
+                        <p>
+                            Registre a movimentação de saída de produtos do almoxarifado.
+                        </p>
 
-            <input
-                type="hidden"
-                name="codigo"
-                value="{{ produto[2] }}"
-            >
+                    </div>
 
-            <input
-                type="hidden"
-                name="quantidade"
-                value="{{ quantidade }}"
-            >
+                </div>
 
-            <input
-                type="hidden"
-                name="confirmar"
-                value="sim"
-            >
 
-            <button
-                type="submit"
-                class="btn-confirmar-saida"
-            >
-                ✓ Confirmar Saída
-            </button>
+                <form method="POST" action="/saida">
 
-        </form>
 
-        <a
-            href="/saida"
-            class="btn-cancelar-saida"
-        >
-            ✕ Cancelar
-        </a>
+                    <div class="linha-entrada">
 
-    </div>
+
+                        <div class="campo">
+
+                            <label for="codigo">
+                                Código do Produto <span>*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="codigo"
+                                name="codigo"
+                                placeholder="Digite o código do produto"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="quantidade">
+                                Quantidade <span>*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantidade"
+                                name="quantidade"
+                                placeholder="Digite a quantidade"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="campo">
+
+    <label for="lote">
+        Lote <span>*</span>
+    </label>
+
+    <select
+        id="lote"
+        name="lote"
+        required
+    >
+
+        <option value="">
+            Selecione o lote
+        </option>
+
+    </select>
 
 </div>
 
-{% endif %}
+
+                    <div class="acoes-entrada">
+
+                        <button
+                            type="submit"
+                            class="btn-registrar-saida"
+                        >
+                            📄 Registrar Saída
+                        </button>
+
+                        <button
+                            type="reset"
+                            class="btn-limpar-entrada"
+                        >
+                            🔄 Limpar Campos
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+
+                {% if mensagem %}
+
+                    <div class="mensagem-saida-erro">
+
+                        ⚠️ {{ mensagem }}
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if produto %}
+
+                    <div class="produto-encontrado-saida">
+
+                        <div class="produto-titulo-saida">
+                            📦 Produto encontrado
+                        </div>
+
+                        <div class="produto-info-saida">
+
+                            <div>
+                                <span>Produto</span>
+                                <strong>{{ produto[1] }}</strong>
+                            </div>
+
+                            <div>
+                                <span>Código</span>
+                                <strong>{{ produto[2] }}</strong>
+                            </div>
+
+                            <div>
+                                <span>Estoque atual</span>
+                                <strong>{{ produto[3] }} unidades</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if confirmacao %}
+
+                    <div class="confirmacao-saida">
+
+                        <div class="confirmacao-icone">
+                            🟠
+                        </div>
+
+                        <h2>Confirmar saída?</h2>
+
+                        <p>
+                            Você está prestes a retirar este material do estoque.
+                        </p>
+
+
+                        <div class="resumo-saida">
+
+                            <div>
+
+                                <span>Produto</span>
+
+                                <strong>
+                                    {{ produto[1] }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>Código</span>
+
+                                <strong>
+                                    {{ produto[2] }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>Quantidade da saída</span>
+
+                                <strong>
+                                    {{ quantidade }} unidades
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>Estoque após a saída</span>
+
+                                <strong>
+                                    {{ produto[3] - quantidade }} unidades
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="acoes-confirmacao">
+
+
+                            <form
+                                method="POST"
+                                action="/saida"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="codigo"
+                                    value="{{ produto[2] }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="quantidade"
+                                    value="{{ quantidade }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="confirmar"
+                                    value="sim"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="btn-confirmar-saida"
+                                >
+                                    ✓ Confirmar Saída
+                                </button>
+
+                            </form>
+
+
+                            <a
+                                href="/saida"
+                                class="btn-cancelar-saida"
+                            >
+                                ✕ Cancelar
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
