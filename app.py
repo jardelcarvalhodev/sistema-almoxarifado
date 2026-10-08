@@ -257,10 +257,8 @@ def buscar_produto():
 
     codigo = request.args.get("codigo")
 
-
     conexao = sqlite3.connect("estoque.db")
     cursor = conexao.cursor()
-
 
     cursor.execute(
         """
@@ -271,31 +269,44 @@ def buscar_produto():
         (codigo,)
     )
 
-
     produto = cursor.fetchone()
 
-
-    conexao.close()
-
-
     if produto:
+
+        cursor.execute(
+            """
+            SELECT lote, quantidade
+            FROM lotes
+            WHERE produto_id = ?
+            AND quantidade > 0
+            ORDER BY lote
+            """,
+            (produto[0],)
+        )
+
+        lotes = cursor.fetchall()
+
+        conexao.close()
 
         return jsonify({
             "encontrado": True,
             "id": produto[0],
             "nome": produto[1],
-            "codigo": produto[2]
+            "codigo": produto[2],
+            "lotes": [
+                {
+                    "lote": lote[0],
+                    "quantidade": lote[1]
+                }
+                for lote in lotes
+            ]
         })
 
+    conexao.close()
 
     return jsonify({
         "encontrado": False
     })
-
-
-# ============================================================
-# EXCLUIR PRODUTO
-# ============================================================
 
 @app.route("/excluir/<int:id>", methods=["POST"])
 def excluir(id):

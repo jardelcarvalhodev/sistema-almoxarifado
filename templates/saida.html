@@ -315,6 +315,60 @@
 
     </div>
 
+    <script>
+
+    const campoCodigo = document.getElementById("codigo");
+    const campoLote = document.getElementById("lote");
+
+    campoCodigo.addEventListener("input", function () {
+
+        const codigo = campoCodigo.value.trim();
+
+        campoLote.innerHTML = `
+            <option value="">
+                Selecione o lote
+            </option>
+        `;
+
+        if (codigo === "") {
+            return;
+        }
+
+        fetch(`/buscar-produto?codigo=${encodeURIComponent(codigo)}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.encontrado) {
+
+                    data.lotes.forEach(function (item) {
+
+                        const opcao = document.createElement("option");
+
+                        opcao.value = item.lote;
+
+                        opcao.textContent =
+                            `${item.lote} — ${item.quantidade} unidades`;
+
+                        campoLote.appendChild(opcao);
+
+                    });
+
+                }
+
+            })
+            .catch(error => {
+
+                console.error(
+                    "Erro ao buscar lotes:",
+                    error
+                );
+
+            });
+
+    });
+
+</script>
+
 </body>
 
 </html>
