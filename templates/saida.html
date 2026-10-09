@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Saída de Material - Kaiko</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 
 <body>
@@ -26,54 +25,54 @@
             </a>
 
             <nav>
-
                 <a href="/cadastrar">📦 Cadastrar Produto</a>
-
                 <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
-
                 <a href="/entrada">📄 Entrada de Material</a>
-
                 <a href="/saida">📄 Saída de Material</a>
-
                 <a href="/estoque">🔍 Consultar Estoque</a>
-
             </nav>
 
         </header>
-
 
         <main class="entrada-container">
 
             <div class="entrada-card">
 
-
                 <div class="saida-cabecalho">
 
-                    <div class="saida-icone">
-                        📄
-                    </div>
+                    <div class="saida-icone">📄</div>
 
                     <div>
-
                         <h1>Saída de Material</h1>
 
                         <p>
                             Registre a movimentação de saída de produtos do almoxarifado.
                         </p>
-
                     </div>
 
                 </div>
 
+                <!-- FORMULÁRIO DE SAÍDA -->
 
                 <form method="POST" action="/saida">
 
-
                     <div class="linha-entrada">
 
+                        <div class="campo">
+                            <label for="data">
+                                Data da Saída <span>*</span>
+                            </label>
+
+                            <input
+                                type="date"
+                                id="data"
+                                name="data"
+                                value="{{ data_saida }}"
+                                required
+                            >
+                        </div>
 
                         <div class="campo">
-
                             <label for="codigo">
                                 Código do Produto <span>*</span>
                             </label>
@@ -83,14 +82,12 @@
                                 id="codigo"
                                 name="codigo"
                                 placeholder="Digite o código do produto"
+                                value="{{ produto['codigo'] if produto else request.form.get('codigo', '') }}"
                                 required
                             >
-
                         </div>
 
-
                         <div class="campo">
-
                             <label for="quantidade">
                                 Quantidade <span>*</span>
                             </label>
@@ -101,34 +98,43 @@
                                 name="quantidade"
                                 placeholder="Digite a quantidade"
                                 min="1"
+                                value="{{ quantidade if quantidade else request.form.get('quantidade', '') }}"
                                 required
                             >
-
                         </div>
-
 
                     </div>
 
                     <div class="campo">
 
-    <label for="lote">
-        Lote <span>*</span>
-    </label>
+                        <label for="lote">
+                            Lote <span>*</span>
+                        </label>
 
-    <select
-        id="lote"
-        name="lote"
-        required
-    >
+                        <select
+                            id="lote"
+                            name="lote"
+                            required
+                        >
 
-        <option value="">
-            Selecione o lote
-        </option>
+                            <option value="">
+                                Selecione o lote
+                            </option>
 
-    </select>
+                            {% for item in lotes %}
 
-</div>
+                                <option
+                                    value="{{ item['lote'] }}"
+                                    {% if item['lote'] == lote %}selected{% endif %}
+                                >
+                                    {{ item['lote'] }} — {{ item['quantidade'] }} unidades
+                                </option>
 
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
 
                     <div class="acoes-entrada">
 
@@ -148,20 +154,19 @@
 
                     </div>
 
-
                 </form>
 
+                <!-- MENSAGEM DE ERRO -->
 
                 {% if mensagem %}
 
                     <div class="mensagem-saida-erro">
-
                         ⚠️ {{ mensagem }}
-
                     </div>
 
                 {% endif %}
 
+                <!-- PRODUTO ENCONTRADO -->
 
                 {% if produto %}
 
@@ -175,17 +180,17 @@
 
                             <div>
                                 <span>Produto</span>
-                                <strong>{{ produto[1] }}</strong>
+                                <strong>{{ produto['nome'] }}</strong>
                             </div>
 
                             <div>
                                 <span>Código</span>
-                                <strong>{{ produto[2] }}</strong>
+                                <strong>{{ produto['codigo'] }}</strong>
                             </div>
 
                             <div>
                                 <span>Estoque atual</span>
-                                <strong>{{ produto[3] }} unidades</strong>
+                                <strong>{{ produto['quantidade'] }} unidades</strong>
                             </div>
 
                         </div>
@@ -194,6 +199,7 @@
 
                 {% endif %}
 
+                <!-- CONFIRMAÇÃO DA SAÍDA -->
 
                 {% if confirmacao %}
 
@@ -209,73 +215,70 @@
                             Você está prestes a retirar este material do estoque.
                         </p>
 
-
                         <div class="resumo-saida">
 
                             <div>
+                                <span>Data da saída</span>
+                                <strong>{{ data_saida }}</strong>
+                            </div>
 
+                            <div>
                                 <span>Produto</span>
-
-                                <strong>
-                                    {{ produto[1] }}
-                                </strong>
-
+                                <strong>{{ produto['nome'] }}</strong>
                             </div>
 
-
                             <div>
-
                                 <span>Código</span>
-
-                                <strong>
-                                    {{ produto[2] }}
-                                </strong>
-
+                                <strong>{{ produto['codigo'] }}</strong>
                             </div>
 
+                            <div>
+                                <span>Lote</span>
+                                <strong>{{ lote }}</strong>
+                            </div>
 
                             <div>
-
                                 <span>Quantidade da saída</span>
-
-                                <strong>
-                                    {{ quantidade }} unidades
-                                </strong>
-
+                                <strong>{{ quantidade }} unidades</strong>
                             </div>
 
-
                             <div>
-
-                                <span>Estoque após a saída</span>
-
+                                <span>Estoque geral após a saída</span>
                                 <strong>
-                                    {{ produto[3] - quantidade }} unidades
+                                    {{ produto['quantidade'] - quantidade }} unidades
                                 </strong>
-
                             </div>
 
                         </div>
 
-
                         <div class="acoes-confirmacao">
 
+                            <!-- FORMULÁRIO DE CONFIRMAÇÃO -->
 
-                            <form
-                                method="POST"
-                                action="/saida"
-                            >
+                            <form method="POST" action="/saida">
 
                                 <input
                                     type="hidden"
                                     name="codigo"
-                                    value="{{ produto[2] }}"
+                                    value="{{ produto['codigo'] }}"
                                 >
 
                                 <input
                                     type="hidden"
                                     name="quantidade"
                                     value="{{ quantidade }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="data"
+                                    value="{{ data_saida }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="lote"
+                                    value="{{ lote }}"
                                 >
 
                                 <input
@@ -293,7 +296,6 @@
 
                             </form>
 
-
                             <a
                                 href="/saida"
                                 class="btn-cancelar-saida"
@@ -301,13 +303,11 @@
                                 ✕ Cancelar
                             </a>
 
-
                         </div>
 
                     </div>
 
                 {% endif %}
-
 
             </div>
 
@@ -315,60 +315,65 @@
 
     </div>
 
+    <!-- BUSCA AUTOMÁTICA DOS LOTES -->
+
     <script>
 
-    const campoCodigo = document.getElementById("codigo");
-    const campoLote = document.getElementById("lote");
+        const campoCodigo =
+            document.getElementById("codigo");
 
-    campoCodigo.addEventListener("input", function () {
+        const campoLote =
+            document.getElementById("lote");
 
-        const codigo = campoCodigo.value.trim();
+        campoCodigo.addEventListener("input", function () {
 
-        campoLote.innerHTML = `
-            <option value="">
-                Selecione o lote
-            </option>
-        `;
+            const codigo = campoCodigo.value.trim();
 
-        if (codigo === "") {
-            return;
-        }
+            campoLote.innerHTML =
+                '<option value="">Selecione o lote</option>';
 
-        fetch(`/buscar-produto?codigo=${encodeURIComponent(codigo)}`)
-            .then(response => response.json())
-            .then(data => {
+            if (codigo === "") {
+                return;
+            }
 
-                if (data.encontrado) {
+            fetch(`/buscar-produto?codigo=${encodeURIComponent(codigo)}`)
 
-                    data.lotes.forEach(function (item) {
+                .then(response => response.json())
 
-                        const opcao = document.createElement("option");
+                .then(data => {
 
-                        opcao.value = item.lote;
+                    if (data.encontrado) {
 
-                        opcao.textContent =
-                            `${item.lote} — ${item.quantidade} unidades`;
+                        data.lotes.forEach(function (item) {
 
-                        campoLote.appendChild(opcao);
+                            const opcao =
+                                document.createElement("option");
 
-                    });
+                            opcao.value = item.lote;
 
-                }
+                            opcao.textContent =
+                                `${item.lote} — ${item.quantidade} unidades`;
 
-            })
-            .catch(error => {
+                            campoLote.appendChild(opcao);
 
-                console.error(
-                    "Erro ao buscar lotes:",
-                    error
-                );
+                        });
 
-            });
+                    }
 
-    });
+                })
 
-</script>
+                .catch(error => {
+
+                    console.error(
+                        "Erro ao buscar lotes:",
+                        error
+                    );
+
+                });
+
+        });
+
+    </script>
 
 </body>
-
 </html>
