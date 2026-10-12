@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login Administrativo - Kaiko</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #202b3f, #101a2b);
+            font-family: Arial, sans-serif;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 160px;
+            max-width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .login-container h1 {
+            margin: 5px 0 10px;
+            color: #202b3f;
+            font-size: 26px;
+        }
+
+        .login-container p {
+            margin-bottom: 25px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .campo-login {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .campo-login label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-weight: bold;
+        }
+
+        .campo-login input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .campo-login input:focus {
+            border-color: #09b95a;
+            box-shadow: 0 0 0 3px rgba(9, 185, 90, 0.12);
+        }
+
+        .botao-login {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #09b95a;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .botao-login:hover {
+            background: #078f45;
+        }
+
+        .erro-login {
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            color: #991b1b;
+            background: #fee2e2;
+            font-size: 14px;
+        }
+
+        .login-rodape {
+            margin-top: 24px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <img
+            src="{{ url_for('static', filename='logo_kaiko.png') }}"
+            alt="Logo Kaiko"
+            class="login-logo"
+        >
+
+        <h1>Acesso administrativo</h1>
+
+        <p>
+            Entre com suas credenciais para acessar
+            o sistema de controle de estoque.
+        </p>
+
+        {% if erro %}
+            <div class="erro-login" role="alert">
+                {{ erro }}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <div class="campo-login">
+                <label for="usuario">Usuário</label>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    name="usuario"
+                    placeholder="Digite seu usuário"
+                    autocomplete="username"
+                    required
+                    autofocus
+                >
+            </div>
+
+            <div class="campo-login">
+                <label for="senha">Senha</label>
+
+                <input
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="botao-login">
+                Entrar no sistema
+            </button>
+
+        </form>
+
+        <div class="login-rodape">
+            Kaiko — Sistema de Controle de Estoque
+        </div>
+
+    </main>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -12,23 +13,19 @@ body {
 
 .pagina {
     min-height: 100vh;
-
     background-image:
         linear-gradient(
             rgba(255, 255, 255, 0.10),
             rgba(255, 255, 255, 0.10)
         ),
         url("/static/fundo_estoque.png");
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     padding: 30px;
 }
 
@@ -36,26 +33,17 @@ body {
     width: min(620px, 75vw);
     max-height: 420px;
     object-fit: contain;
-
     margin-bottom: 10px;
-
     filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.25));
 }
 
 .painel {
     width: min(1450px, 95vw);
-
     background: rgba(255, 255, 255, 0.82);
-
     backdrop-filter: blur(8px);
-
     border-radius: 28px;
-
     padding: 28px 32px;
-
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.20);
-
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.20);
     border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
@@ -77,43 +65,32 @@ body {
 
 .botoes {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
 }
 
 .botao {
     min-height: 100px;
-
+    min-width: 0;
     display: flex;
     align-items: center;
-
-    padding: 18px 22px;
-
+    padding: 16px 14px;
     border-radius: 20px;
-
     color: white;
     text-decoration: none;
-
-    font-size: 20px;
+    font-size: 14px;
     font-weight: bold;
-
-    box-shadow:
-        0 8px 15px rgba(0, 0, 0, 0.18);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .botao:hover {
     transform: translateY(-4px);
-
-    box-shadow:
-        0 13px 22px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 13px 22px rgba(0, 0, 0, 0.25);
 }
 
 .botao .icone {
-    font-size: 42px;
+    font-size: 25px;
     margin-right: 18px;
 }
 
@@ -124,20 +101,24 @@ body {
 .botao strong {
     width: 38px;
     height: 38px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 50%;
-
     background: rgba(255, 255, 255, 0.18);
-
-    font-size: 32px;
+    font-size: 22px;
 }
 
 .cadastrar {
     background: linear-gradient(135deg, #0bbf58, #079642);
+}
+
+.fornecedor {
+    background: #f5b400;
+}
+
+.fornecedor:hover {
+    background: #d99d00;
 }
 
 .entrada {
@@ -153,15 +134,12 @@ body {
 }
 
 @media (max-width: 1000px) {
-
     .botoes {
         grid-template-columns: repeat(2, 1fr);
     }
-
 }
 
 @media (max-width: 600px) {
-
     .pagina {
         padding: 20px;
     }
@@ -185,74 +163,59 @@ body {
     .botoes {
         grid-template-columns: 1fr;
     }
+}
 
-}/* ========================================
+/* ========================================
    PÁGINA DE CADASTRO
    ======================================== */
 
 .pagina-cadastro {
     min-height: 100vh;
-
     background-image:
         linear-gradient(
             rgba(255, 255, 255, 0.12),
             rgba(255, 255, 255, 0.12)
         ),
         url("/static/fundo_estoque.png");
-
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-
     padding-bottom: 50px;
 }
-
 
 /* MENU SUPERIOR */
 
 .menu {
     width: 94%;
     max-width: 1500px;
-
     margin: 20px auto;
-
     padding: 10px 25px;
-
     background: rgba(255, 255, 255, 0.92);
-
     backdrop-filter: blur(8px);
-
     border-radius: 22px;
-
     display: flex;
     align-items: center;
-
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
 }
-
 
 /* LOGO DO MENU */
 
 .logo-menu {
     display: flex;
     align-items: center;
-
     text-decoration: none;
 }
 
 .logo-menu img {
     width: 190px;
     height: 100px;
-
     object-fit: contain;
 }
-
 
 /* LINKS DO MENU */
 
 .menu nav {
     flex: 1;
-
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -260,69 +223,91 @@ body {
 
 .menu nav a {
     text-decoration: none;
-
-    color: #1f2937;
-
+    color: white;
     font-size: 15px;
     font-weight: bold;
-
-    padding: 12px 15px;
-
+    padding: 12px 18px;
     border-radius: 12px;
-
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: 0.2s;
+    background: #0bbf58;
 }
 
 .menu nav a:hover {
-    background: #e8f7ee;
-    color: #079447;
+    background: #079642;
+    color: white;
+    transform: translateY(-2px);
 }
 
+/* CORES INDIVIDUAIS DOS BOTÕES DO MENU */
+
+.menu nav a:nth-child(1) {
+    background: #0bbf58;
+}
+
+.menu nav a:nth-child(2) {
+    background: #f5b400;
+}
+
+.menu nav a:nth-child(3) {
+    background: #1976e8;
+}
+
+.menu nav a:nth-child(4) {
+    background: #ff7514;
+}
+
+.menu nav a:nth-child(5) {
+    background: #6430e8;
+}
+
+.menu nav a:nth-child(1):hover {
+    background: #079642;
+}
+
+.menu nav a:nth-child(2):hover {
+    background: #d99d00;
+}
+
+.menu nav a:nth-child(3):hover {
+    background: #1265c7;
+}
+
+.menu nav a:nth-child(4):hover {
+    background: #d95d08;
+}
+
+.menu nav a:nth-child(5):hover {
+    background: #4d20c4;
+}
 
 /* ÁREA DO CADASTRO */
 
 .cadastro-container {
     width: 100%;
-
     display: flex;
     justify-content: center;
-
     padding: 20px;
 }
-
 
 /* CARD */
 
 .cadastro-card {
     width: min(1050px, 95vw);
-
     background: rgba(255, 255, 255, 0.96);
-
     border-radius: 22px;
-
     overflow: hidden;
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
-
-/* TÍTULO */
+/* TÍTULO PADRÃO: VERDE */
 
 .cadastro-titulo {
-    background: linear-gradient(
-        135deg,
-        #0bbf58,
-        #079642
-    );
-
+    background: linear-gradient(135deg, #0bbf58, #079642);
     color: white;
-
     padding: 24px 35px;
-
     display: flex;
     align-items: center;
-
     gap: 15px;
 }
 
@@ -332,10 +317,8 @@ body {
 
 .cadastro-titulo h1 {
     margin: 0;
-
     font-size: 30px;
 }
-
 
 /* FORMULÁRIO */
 
@@ -343,19 +326,14 @@ body {
     padding: 35px;
 }
 
-
 /* LINHAS */
 
 .linha-form {
     display: grid;
-
     grid-template-columns: 1fr 1fr;
-
     gap: 25px;
-
     margin-bottom: 25px;
 }
-
 
 /* CAMPOS */
 
@@ -366,11 +344,8 @@ body {
 
 .campo label {
     color: #111827;
-
     font-size: 16px;
-
     font-weight: bold;
-
     margin-bottom: 8px;
 }
 
@@ -378,28 +353,19 @@ body {
     color: #e11d48;
 }
 
-
 /* INPUTS */
 
 .campo input,
 .campo select,
 .campo textarea {
     width: 100%;
-
     border: 1px solid #d1d5db;
-
     border-radius: 10px;
-
     padding: 14px 16px;
-
     font-size: 16px;
-
     font-family: Arial, Helvetica, sans-serif;
-
     background: white;
-
     outline: none;
-
     transition: 0.2s;
 }
 
@@ -407,11 +373,8 @@ body {
 .campo select:focus,
 .campo textarea:focus {
     border-color: #0bbf58;
-
-    box-shadow:
-        0 0 0 3px rgba(11, 191, 88, 0.15);
+    box-shadow: 0 0 0 3px rgba(11, 191, 88, 0.15);
 }
-
 
 /* TERCEIRA LINHA */
 
@@ -421,91 +384,63 @@ body {
 
 .campo textarea {
     min-height: 48px;
-
     resize: vertical;
 }
-
 
 /* BOTÕES */
 
 .acoes {
     display: flex;
-
     justify-content: center;
-
     gap: 18px;
-
     margin-top: 10px;
 }
 
 .acoes button {
     border: none;
-
     border-radius: 12px;
-
     padding: 15px 45px;
-
     font-size: 17px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
-
 
 /* SALVAR */
 
 .btn-salvar {
-    background: linear-gradient(
-        135deg,
-        #0bbf58,
-        #079642
-    );
-
+    background: linear-gradient(135deg, #0bbf58, #079642);
     color: white;
-
-    box-shadow:
-        0 6px 14px rgba(7, 150, 66, 0.30);
+    box-shadow: 0 6px 14px rgba(7, 150, 66, 0.30);
 }
 
 .btn-salvar:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 9px 18px rgba(7, 150, 66, 0.35);
+    box-shadow: 0 9px 18px rgba(7, 150, 66, 0.35);
 }
-
 
 /* LIMPAR */
 
 .btn-limpar {
     background: #e5e7eb;
-
     color: #111827;
 }
 
 .btn-limpar:hover {
     background: #d1d5db;
-
     transform: translateY(-2px);
 }
 
-
-/* RESPONSIVIDADE */
+/* RESPONSIVIDADE DO CADASTRO */
 
 @media (max-width: 900px) {
-
     .menu {
         flex-direction: column;
-
         gap: 10px;
     }
 
     .menu nav {
         flex-wrap: wrap;
-
         justify-content: center;
     }
 
@@ -513,15 +448,11 @@ body {
     .linha-form:last-of-type {
         grid-template-columns: 1fr;
     }
-
 }
 
-
 @media (max-width: 600px) {
-
     .menu nav a {
         font-size: 13px;
-
         padding: 9px;
     }
 
@@ -549,94 +480,53 @@ body {
     .acoes button {
         width: 100%;
     }
-
-}/* BOTÕES VERDES DO MENU */
-
-.menu nav a {
-    background: #0bbf58;
-    color: white;
-
-    padding: 12px 18px;
-
-    border-radius: 10px;
-
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-
-    transition: 0.2s;
 }
 
-.menu nav a:hover {
-    background: #079642;
-
-    color: white;
-
-    transform: translateY(-2px);
-}/* ========================================
+/* ========================================
    PÁGINA DE ENTRADA DE MATERIAL
    ======================================== */
 
 .pagina-entrada {
     min-height: 100vh;
-
     background-image:
         linear-gradient(
             rgba(255, 255, 255, 0.12),
             rgba(255, 255, 255, 0.12)
         ),
         url("/static/fundo_estoque.png");
-
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-
     padding-bottom: 50px;
 }
-
 
 /* ÁREA PRINCIPAL */
 
 .entrada-container {
     width: 100%;
-
     display: flex;
     justify-content: center;
-
     padding: 20px;
 }
-
 
 /* CARD */
 
 .entrada-card {
     width: min(1050px, 95vw);
-
     background: rgba(255, 255, 255, 0.96);
-
     border-radius: 22px;
-
     overflow: hidden;
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
-
 
 /* CABEÇALHO AZUL */
 
 .entrada-titulo {
-    background: linear-gradient(
-        135deg,
-        #1683f5,
-        #1764df
-    );
-
+    background: linear-gradient(135deg, #1683f5, #1764df);
     color: white;
-
     padding: 24px 35px;
-
     display: flex;
     align-items: center;
-
     gap: 18px;
 }
 
@@ -646,38 +536,29 @@ body {
 
 .entrada-titulo h1 {
     margin: 0 0 5px 0;
-
     font-size: 30px;
 }
 
 .entrada-titulo p {
     margin: 0;
-
     font-size: 16px;
-
     opacity: 0.95;
 }
 
-
-/* FORMULÁRIO */
+/* FORMULÁRIO DE ENTRADA */
 
 .entrada-card form {
     padding: 35px;
 }
 
-
 /* LINHAS */
 
 .linha-entrada {
     display: grid;
-
     grid-template-columns: 1fr 1fr 1fr;
-
     gap: 22px;
-
     margin-bottom: 25px;
 }
-
 
 /* CAMPOS */
 
@@ -688,11 +569,8 @@ body {
 
 .entrada-card .campo label {
     color: #111827;
-
     font-size: 16px;
-
     font-weight: bold;
-
     margin-bottom: 8px;
 }
 
@@ -700,28 +578,19 @@ body {
     color: #e11d48;
 }
 
-
 /* INPUTS */
 
 .entrada-card .campo input,
 .entrada-card .campo select,
 .entrada-card .campo textarea {
     width: 100%;
-
     border: 1px solid #d1d5db;
-
     border-radius: 10px;
-
     padding: 14px 16px;
-
     font-size: 16px;
-
     font-family: Arial, Helvetica, sans-serif;
-
     background: white;
-
     outline: none;
-
     transition: 0.2s;
 }
 
@@ -729,11 +598,8 @@ body {
 .entrada-card .campo select:focus,
 .entrada-card .campo textarea:focus {
     border-color: #1683f5;
-
-    box-shadow:
-        0 0 0 3px rgba(22, 131, 245, 0.15);
+    box-shadow: 0 0 0 3px rgba(22, 131, 245, 0.15);
 }
-
 
 /* OBSERVAÇÕES */
 
@@ -743,82 +609,56 @@ body {
 
 .campo-observacoes textarea {
     min-height: 65px;
-
     resize: vertical;
 }
 
-
-/* BOTÕES */
+/* BOTÕES DE ENTRADA */
 
 .acoes-entrada {
     display: flex;
-
     justify-content: center;
-
     gap: 20px;
-
     margin-top: 10px;
 }
 
 .acoes-entrada button {
     border: none;
-
     border-radius: 12px;
-
     padding: 16px 55px;
-
     font-size: 17px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
 }
 
-
-/* REGISTRAR */
+/* REGISTRAR ENTRADA */
 
 .btn-registrar-entrada {
-    background: linear-gradient(
-        135deg,
-        #1683f5,
-        #1764df
-    );
-
+    background: linear-gradient(135deg, #1683f5, #1764df);
     color: white;
-
-    box-shadow:
-        0 6px 14px rgba(23, 100, 223, 0.30);
+    box-shadow: 0 6px 14px rgba(23, 100, 223, 0.30);
 }
 
 .btn-registrar-entrada:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 9px 18px rgba(23, 100, 223, 0.35);
+    box-shadow: 0 9px 18px rgba(23, 100, 223, 0.35);
 }
 
-
-/* LIMPAR */
+/* LIMPAR ENTRADA */
 
 .btn-limpar-entrada {
     background: #e5e7eb;
-
     color: #111827;
 }
 
 .btn-limpar-entrada:hover {
     background: #d1d5db;
-
     transform: translateY(-2px);
 }
 
-
-/* RESPONSIVIDADE */
+/* RESPONSIVIDADE DA ENTRADA */
 
 @media (max-width: 900px) {
-
     .linha-entrada {
         grid-template-columns: 1fr;
     }
@@ -830,76 +670,6 @@ body {
     .acoes-entrada button {
         width: 100%;
     }
-}/* Ajuste dos 5 botões da página inicial */
-
-.botoes {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-}
-
-.botao {
-    min-width: 0;
-    padding: 16px 14px;
-    font-size: 14px;
-}
-
-.botao .icone {
-    font-size: 25px;
-}
-
-.botao strong {
-    font-size: 22px;
-}
-
-.fornecedor {
-    background: #f5b400;
-}
-
-.fornecedor:hover {
-    background: #d99d00;
-}/* Cores dos botões do menu superior */
-
-.menu nav a:nth-child(1) {
-    background: #0bbf58;
-}
-
-.menu nav a:nth-child(2) {
-    background: #f5b400;
-}
-
-.menu nav a:nth-child(3) {
-    background: #1976e8;
-}
-
-.menu nav a:nth-child(4) {
-    background: #ff7514;
-}
-
-.menu nav a:nth-child(5) {
-    background: #6430e8;
-}
-
-/* Efeito ao passar o mouse */
-
-.menu nav a:nth-child(1):hover {
-    background: #079642;
-}
-
-.menu nav a:nth-child(2):hover {
-    background: #d99d00;
-}
-
-.menu nav a:nth-child(3):hover {
-    background: #1265c7;
-}
-
-.menu nav a:nth-child(4):hover {
-    background: #d95d08;
-}
-
-.menu nav a:nth-child(5):hover {
-    background: #4d20c4;
 }
 
 /* =========================================
@@ -930,8 +700,7 @@ body {
     font-size: 14px;
 }
 
-
-/* Produto encontrado */
+/* PRODUTO ENCONTRADO */
 
 .produto-encontrado-saida {
     margin-top: 22px;
@@ -973,8 +742,7 @@ body {
     color: #222;
 }
 
-
-/* Mensagem de erro */
+/* MENSAGEM DE ERRO */
 
 .mensagem-saida-erro {
     margin-top: 20px;
@@ -987,8 +755,7 @@ body {
     font-weight: bold;
 }
 
-
-/* Confirmação */
+/* CONFIRMAÇÃO */
 
 .confirmacao-saida {
     margin-top: 25px;
@@ -1016,8 +783,7 @@ body {
     margin-bottom: 20px;
 }
 
-
-/* Resumo da saída */
+/* RESUMO DA SAÍDA */
 
 .resumo-saida {
     display: grid;
@@ -1046,8 +812,7 @@ body {
     font-size: 15px;
 }
 
-
-/* Botões da confirmação */
+/* BOTÕES DA CONFIRMAÇÃO */
 
 .acoes-confirmacao {
     display: flex;
@@ -1096,8 +861,7 @@ body {
     background: #d4d6da;
 }
 
-
-/* Botão Registrar Saída */
+/* BOTÃO REGISTRAR SAÍDA */
 
 .btn-registrar-saida {
     background: #ff7514;
@@ -1114,11 +878,9 @@ body {
     background: #e85d04;
 }
 
-
-/* Responsividade */
+/* RESPONSIVIDADE DA SAÍDA */
 
 @media (max-width: 800px) {
-
     .produto-info-saida {
         grid-template-columns: 1fr;
     }
@@ -1135,5 +897,144 @@ body {
     .btn-cancelar-saida {
         width: 100%;
     }
+}
 
+/* =========================================
+   COR ESPECÍFICA DO CADASTRO DE FORNECEDOR
+   ========================================= */
+
+/* Cadastro de produto permanece verde */
+.pagina-cadastro .cadastro-titulo {
+    background: linear-gradient(135deg, #0bbf58, #079642);
+}
+
+/* Fornecedor fica amarelo.
+   A classe titulo-fornecedor deve estar no cabeçalho
+   do arquivo fornecedor.html. */
+.cadastro-titulo.titulo-fornecedor {
+    background: linear-gradient(135deg, #ffc400, #f5b400) !important;
+}
+
+/* Botão Histórico de Movimentações */
+.menu nav a:nth-child(6) {
+    background-color: #202b3f !important;
+    color: #ffffff !important;
+}
+
+/* Botão Histórico de Movimentações na página inicial */
+.historico {
+    background: #202b3f;
+    color: #ffffff;
+}
+
+/* Botão Histórico de Movimentações */
+.botao.historico {
+    background: #202b3f !important;
+    color: #ffffff !important;
+}
+
+/* Botão para sair do sistema */
+.botao-sair {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #202b3f;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.botao-sair:hover {
+    background: #101a2b;
+}
+
+/* Botão sair no canto superior direito */
+.topo-sistema {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    z-index: 1000;
+}
+
+.botao-sair {
+    background: #202b3f;
+    color: #ffffff;
+    border: none;
+    border-radius: 9px;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.botao-sair:hover {
+    background: #101a2b;
+}
+
+/* Fundo escuro da confirmação */
+.modal-saida {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-conteudo {
+    width: 100%;
+    max-width: 400px;
+    padding: 28px;
+    background: #ffffff;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-conteudo h2 {
+    color: #202b3f;
+    margin-top: 0;
+}
+
+.modal-conteudo p {
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.modal-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.modal-botoes button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.confirmar-sim {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.confirmar-sim:hover {
+    background: #b91c1c;
+}
+
+.confirmar-cancelar {
+    background: #e2e8f0;
+    color: #202b3f;
+}
+
+.confirmar-cancelar:hover {
+    background: #cbd5e1;
 }

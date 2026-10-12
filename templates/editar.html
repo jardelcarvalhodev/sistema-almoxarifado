@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Produto - Kaiko</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .editar-container {
+            width: 92%;
+            max-width: 850px;
+            margin: 35px auto;
+        }
+
+        .editar-card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .editar-cabecalho {
+            background: linear-gradient(135deg, #1976ed, #1259c3);
+            color: white;
+            padding: 25px 30px;
+        }
+
+        .editar-cabecalho h1 {
+            margin: 0 0 8px;
+        }
+
+        .editar-cabecalho p {
+            margin: 0;
+        }
+
+        .editar-formulario {
+            padding: 30px;
+        }
+
+        .editar-formulario .campo {
+            margin-bottom: 20px;
+        }
+
+        .editar-formulario input,
+        .editar-formulario select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .editar-acoes {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .editar-acoes button,
+        .editar-acoes a {
+            display: inline-block;
+            border: none;
+            border-radius: 9px;
+            padding: 13px 22px;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-atualizar {
+            background: #1976ed;
+            color: white;
+        }
+
+        .btn-voltar {
+            background: #e5e7eb;
+            color: #222;
+        }
+
+        @media (max-width: 600px) {
+            .editar-formulario {
+                padding: 20px;
+            }
+
+            .editar-acoes {
+                flex-direction: column;
+            }
+
+            .editar-acoes button,
+            .editar-acoes a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="pagina-cadastro">
+
+        <header class="menu">
+
+            <a href="/" class="logo-menu">
+                <img
+                    src="{{ url_for('static', filename='logo_kaiko.png') }}"
+                    alt="Kaiko"
+                >
+            </a>
+
+            <nav>
+                <a href="/cadastrar">📦 Cadastrar Produto</a>
+                <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
+                <a href="/entrada">📄 Entrada de Material</a>
+                <a href="/saida">📄 Saída de Material</a>
+                <a href="/estoque">🔍 Consultar Estoque</a>
+                <a href="/historico">📋 Histórico de Movimentações</a>
+            </nav>
+
+        </header>
+
+        <main class="editar-container">
+
+            <div class="editar-card">
+
+                <div class="editar-cabecalho">
+                    <h1>✏️ Editar Produto</h1>
+                    <p>Altere os dados cadastrais do produto.</p>
+                </div>
+
+                <form
+                    class="editar-formulario"
+                    method="POST"
+                    action="{{ url_for('editar', id=produto['id']) }}"
+                >
+
+                    <div class="campo">
+                        <label for="codigo">Código do Produto *</label>
+
+                        <input
+                            type="text"
+                            id="codigo"
+                            name="codigo"
+                            value="{{ produto['codigo'] }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="nome">Nome do Produto *</label>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            value="{{ produto['nome'] }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="categoria">Categoria</label>
+
+                        <select id="categoria" name="categoria">
+                            <option value="">Selecione a categoria</option>
+
+                            {% for categoria in [
+                                'Higiene',
+                                'Limpeza',
+                                'Escritório',
+                                'Descartáveis',
+                                'Outros'
+                            ] %}
+
+                                <option
+                                    value="{{ categoria }}"
+                                    {% if produto['categoria'] == categoria %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ categoria }}
+                                </option>
+
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="editar-acoes">
+
+                        <button
+                            type="submit"
+                            class="btn-atualizar"
+                        >
+                            💾 Salvar Alterações
+                        </button>
+
+                        <a href="/estoque" class="btn-voltar">
+                            ↩ Voltar ao Estoque
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

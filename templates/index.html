@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -8,21 +9,174 @@
     <title>Kaiko - Sistema de Estoque</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .topo-sistema {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            z-index: 1000;
+        }
+
+        .botao-sair {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #202b3f;
+            color: #ffffff;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .botao-sair:hover {
+            background: #101a2b;
+        }
+
+        .modal-saida {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-conteudo {
+            width: 100%;
+            max-width: 400px;
+            padding: 28px;
+            background: #ffffff;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        .modal-conteudo h2 {
+            color: #202b3f;
+            margin-top: 0;
+        }
+
+        .modal-conteudo p {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .modal-botoes {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .modal-botoes button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .confirmar-sim {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .confirmar-sim:hover {
+            background: #b91c1c;
+        }
+
+        .confirmar-cancelar {
+            background: #e2e8f0;
+            color: #202b3f;
+        }
+
+        .confirmar-cancelar:hover {
+            background: #cbd5e1;
+        }
+
+        @media (max-width: 600px) {
+            .topo-sistema {
+                top: 10px;
+                right: 10px;
+            }
+
+            .botao-sair {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- BOTÃO SAIR NO CANTO SUPERIOR DIREITO -->
+    <div class="topo-sistema">
+        <button
+            type="button"
+            class="botao-sair"
+            onclick="confirmarSaida()">
+            🚪 Sair do sistema
+        </button>
+    </div>
+
+    <!-- JANELA DE CONFIRMAÇÃO -->
+    <div
+        id="modalSaida"
+        class="modal-saida"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloModal">
+
+        <div class="modal-conteudo">
+
+            <h2 id="tituloModal">🚪 Sair do sistema?</h2>
+
+            <p>Tem certeza de que deseja encerrar sua sessão?</p>
+
+            <div class="modal-botoes">
+
+                <button
+                    type="button"
+                    class="confirmar-sim"
+                    onclick="window.location.href='/logout'">
+                    Sim, sair
+                </button>
+
+                <button
+                    type="button"
+                    class="confirmar-cancelar"
+                    onclick="fecharConfirmacao()">
+                    Cancelar
+                </button>
+
+            </div>
+        </div>
+    </div>
+
     <div class="pagina">
 
-        <img src="{{ url_for('static', filename='logo_kaiko.png') }}"
-             class="logo"
-             alt="Kaiko">
+        <img
+            src="{{ url_for('static', filename='logo_kaiko.png') }}"
+            class="logo"
+            alt="Kaiko">
 
         <div class="painel">
 
             <h1>Bem-vindo ao <span>sistema!</span></h1>
 
-            <p>Gerencie o seu almoxarifado de forma simples, rápida e organizada.</p>
+            <p>
+                Gerencie o seu almoxarifado de forma simples,
+                rápida e organizada.
+            </p>
 
             <div class="botoes">
 
@@ -56,12 +210,38 @@
                     <strong>›</strong>
                 </a>
 
+                <a href="/historico" class="botao historico">
+                    <span class="icone">📋</span>
+                    <span>Histórico de<br>Movimentações</span>
+                    <strong>›</strong>
+                </a>
+
             </div>
 
         </div>
-
     </div>
 
-</body>
+    <script>
+        function confirmarSaida() {
+            document.getElementById("modalSaida").style.display = "flex";
+        }
 
+        function fecharConfirmacao() {
+            document.getElementById("modalSaida").style.display = "none";
+        }
+
+        document.addEventListener("keydown", function(evento) {
+            if (evento.key === "Escape") {
+                fecharConfirmacao();
+            }
+        });
+
+        document.getElementById("modalSaida").addEventListener("click", function(evento) {
+            if (evento.target === this) {
+                fecharConfirmacao();
+            }
+        });
+    </script>
+
+</body>
 </html>
