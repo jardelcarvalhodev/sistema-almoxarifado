@@ -229,6 +229,31 @@
             .acoes .botao { width: 100%; }
         }
     </style>
+
+    <style>
+      body { background: linear-gradient(rgba(236,245,255,.42), rgba(236,245,255,.42)), url("{{ url_for('static', filename='fundo_estoque.png') }}") center / cover fixed no-repeat !important; color: #1d2c42 !important; }
+      .painel { background: rgba(255,255,255,.96) !important; border-color: #d4e0ef !important; box-shadow: 0 12px 34px rgba(20,54,95,.15) !important; }
+      h1 { color: #2478e5 !important; }
+      .subtitulo, .contador { color: #52657d !important; }
+      label { color: #29415e !important; }
+      input, select { background: #fff !important; color: #1d2c42 !important; border-color: #cfdaea !important; }
+      input:focus, select:focus { border-color: #2478e5 !important; }
+      .botao { min-height: 40px !important; padding: 10px 15px !important; font-size: 13px !important; }
+      .principal { background: #2478e5 !important; color: #fff !important; }
+      .secundario { background: #e8f1fc !important; color: #174c88 !important; }
+      .perigo { background: #d94154 !important; color: #fff !important; }
+      .tabela-wrapper { border-color: #d4e0ef !important; }
+      th { background: #e8f1fc !important; color: #174c88 !important; border-color: #d4e0ef !important; }
+      td { color: #33445b !important; border-color: #dfe7f1 !important; }
+      tbody tr:hover { background: #e8f2ff !important; }
+      .entrada { background: #d9f8e6 !important; color: #12683b !important; }
+      .saida { background: #ffe3e7 !important; color: #a61f36 !important; }
+      .cadastro { background: #e8e2ff !important; color: #5033a0 !important; }
+      .outro { background: #e8f1fc !important; color: #174c88 !important; }
+      .mensagem { background: #e8f2ff !important; color: #174c88 !important; border-color: #c8dcf5 !important; }
+      .acoes form { margin: 0; }
+    </style>
+
 </head>
 
 <body>
@@ -359,7 +384,7 @@
                 </span>
 
                 <div class="acoes">
-                    {% if session.get('tipo') == 'admin' %}
+                    {% if session.get('perfil') == 'admin' %}
                         <form
                             method="POST"
                             action="{{ url_for('limpar_historico') }}"

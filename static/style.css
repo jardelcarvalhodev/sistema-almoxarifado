@@ -556,3 +556,80 @@ footer {
         max-width: 100%;
     }
 }
+
+
+/* ==================================================
+   JC SISTEMA — TEMA AZUL E BRANCO (REFINAMENTO)
+   ================================================== */
+:root {
+  --preto: #12315b;
+  --preto-secundario: #1d477d;
+  --laranja: #2478e5;
+  --laranja-hover: #155fc0;
+  --azul: #2478e5;
+  --fundo: #edf4fc;
+  --texto: #1d2c42;
+  --borda: #d4e0ef;
+  --sombra: 0 10px 30px rgba(20, 54, 95, .12);
+}
+body {
+  background-color: #eaf2fb !important;
+  background-image: linear-gradient(rgba(238,246,255,.48), rgba(238,246,255,.48)), url("/static/fundo_estoque.png") !important;
+  background-position: center !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  color: #1d2c42 !important;
+}
+a { color: #1f67bd; }
+a:hover { color: #124a91; }
+.topo, .cabecalho, header.cabecalho, thead {
+  background: #163e70 !important;
+  color: #fff !important;
+}
+.painel, .login-container, .cadastro-container, .ajuda, .secao-ajuda {
+  background: rgba(255,255,255,.94) !important;
+  border: 1px solid rgba(211,226,244,.95) !important;
+  box-shadow: 0 12px 34px rgba(20,54,95,.15) !important;
+}
+button, input[type="submit"], .btn, .botao, .principal {
+  min-height: 40px !important;
+  height: auto !important;
+  width: auto;
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  background: #2478e5 !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  box-shadow: 0 3px 9px rgba(36,120,229,.16);
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+button:hover, input[type="submit"]:hover, .btn:hover, .botao:hover, .principal:hover {
+  background: #155fc0 !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(36,120,229,.24);
+}
+.secundario, .btn-secundario, .botao-voltar {
+  background: #e8f1fc !important;
+  color: #174c88 !important;
+  border: 1px solid #c8dcf5 !important;
+}
+.secundario:hover, .btn-secundario:hover, .botao-voltar:hover {
+  background: #d8e9fc !important;
+  color: #123b6c !important;
+}
+.perigo, .btn-perigo, .botao-excluir {
+  background: #d94154 !important;
+  color: #fff !important;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #2478e5 !important;
+  box-shadow: 0 0 0 3px rgba(36,120,229,.16) !important;
+}
+table { background: rgba(255,255,255,.97) !important; }
+thead, th { background: #e8f1fc !important; color: #174c88 !important; }
+tbody tr:nth-child(even) { background: #f5f9ff !important; }
+tbody tr:hover { background: #e8f2ff !important; }
+td { color: #33445b !important; }

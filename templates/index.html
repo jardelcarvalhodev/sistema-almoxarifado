@@ -184,6 +184,22 @@
             }
         }
     </style>
+
+    <style>
+      body { background-image: linear-gradient(rgba(236,245,255,.40), rgba(236,245,255,.40)), url("{{ url_for('static', filename='fundo_estoque.png') }}") !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; }
+      .hero { background: linear-gradient(135deg, #12315b, #2478e5) !important; box-shadow: 0 14px 35px rgba(18,49,91,.24) !important; }
+      .titulo-secao, .ajuda-card h2 { color: #163e70 !important; }
+      .atalho { min-height: 92px !important; padding: 20px 22px !important; border: 1px solid rgba(255,255,255,.28); box-shadow: 0 8px 22px rgba(20,54,95,.18) !important; }
+      .atalho .icone { font-size: 29px !important; }
+      .verde, .azul, .laranja, .vermelho, .roxo, .escuro { background: linear-gradient(135deg, #2b82ed, #174c91) !important; }
+      .botao-sair { background: #d94154 !important; }
+      .ajuda-card { background: rgba(255,255,255,.94) !important; border-color: #d4e0ef !important; }
+      .whatsapp { background: #2478e5 !important; }
+      .whatsapp:hover { background: #155fc0 !important; }
+      .rodape { color: #52657d !important; }
+      @media (max-width: 650px) { .atalho { min-height: 78px !important; } }
+    </style>
+
 </head>
 
 <body>
