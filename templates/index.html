@@ -1,247 +1,295 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Kaiko - Sistema de Estoque</title>
-
+    <title>JC Sistema | Almoxarifado</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
-        .topo-sistema {
-            position: fixed;
-            top: 20px;
-            right: 25px;
-            z-index: 1000;
+        body {
+            background-color: #f4f5f7;
+            color: #202938;
+        }
+
+        .pagina-inicial {
+            width: min(1100px, 94%);
+            margin: 35px auto;
+        }
+
+        .hero {
+            padding: 35px 25px;
+            text-align: center;
+            background: #171717;
+            color: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.15);
+        }
+
+        .hero img {
+            width: 145px;
+            max-height: 100px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(27px, 4vw, 40px);
+        }
+
+        .hero p {
+            margin: 0;
+            color: #dedede;
+        }
+
+        .barra-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .usuario-logado {
+            color: #444;
+            font-size: 14px;
         }
 
         .botao-sair {
-            display: inline-block;
-            padding: 12px 18px;
-            background: #202b3f;
-            color: #ffffff;
-            border: none;
-            border-radius: 9px;
-            font-size: 14px;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background: #dc3545;
         }
 
         .botao-sair:hover {
-            background: #101a2b;
-        }
-
-        .modal-saida {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.6);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-conteudo {
-            width: 100%;
-            max-width: 400px;
-            padding: 28px;
-            background: #ffffff;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-            box-sizing: border-box;
-        }
-
-        .modal-conteudo h2 {
-            color: #202b3f;
-            margin-top: 0;
-        }
-
-        .modal-conteudo p {
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        .modal-botoes {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        .modal-botoes button {
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .confirmar-sim {
-            background: #dc2626;
-            color: #ffffff;
-        }
-
-        .confirmar-sim:hover {
             background: #b91c1c;
         }
 
-        .confirmar-cancelar {
-            background: #e2e8f0;
-            color: #202b3f;
+        .titulo-secao {
+            margin: 35px 0 18px;
+            font-size: 24px;
+            color: #171717;
         }
 
-        .confirmar-cancelar:hover {
-            background: #cbd5e1;
+        .atalhos {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 25px;
         }
 
-        @media (max-width: 600px) {
-            .topo-sistema {
-                top: 10px;
-                right: 10px;
+        .atalho {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 105px;
+            padding: 22px;
+            border-radius: 14px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,.12);
+            transition: transform .2s, filter .2s;
+        }
+
+        .atalho:hover {
+            color: white;
+            transform: translateY(-3px);
+            filter: brightness(1.06);
+        }
+
+        .atalho .icone {
+            font-size: 34px;
+        }
+
+        .atalho h2 {
+            margin: 0 0 6px;
+            font-size: 18px;
+        }
+
+        .atalho p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: .95;
+        }
+
+        .verde { background: linear-gradient(135deg, #0bc56b, #078b48); }
+        .azul { background: linear-gradient(135deg, #3289f5, #1559bd); }
+        .laranja { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .vermelho { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .roxo { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .escuro { background: linear-gradient(135deg, #414141, #171717); }
+
+        .ajuda-card {
+            margin-top: 35px;
+            padding: 28px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 5px 18px rgba(0,0,0,.07);
+        }
+
+        .ajuda-card h2 {
+            margin-top: 0;
+            color: #171717;
+        }
+
+        .whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+            padding: 14px 22px;
+            border-radius: 9px;
+            background: #25d366;
+            color: white;
+            font-weight: bold;
+        }
+
+        .whatsapp:hover {
+            background: #128c4a;
+            color: white;
+        }
+
+        .rodape {
+            padding: 25px 10px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            .pagina-inicial {
+                margin: 18px auto;
             }
 
-            .botao-sair {
-                padding: 10px 12px;
-                font-size: 12px;
+            .hero {
+                padding: 27px 18px;
+            }
+
+            .atalhos {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .atalho {
+                min-height: 85px;
+                padding: 17px;
+            }
+
+            .barra-superior {
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 
 <body>
+    <main class="pagina-inicial">
 
-    <!-- BOTÃO SAIR NO CANTO SUPERIOR DIREITO -->
-    <div class="topo-sistema">
-        <button
-            type="button"
-            class="botao-sair"
-            onclick="confirmarSaida()">
-            🚪 Sair do sistema
-        </button>
-    </div>
-
-    <!-- JANELA DE CONFIRMAÇÃO -->
-    <div
-        id="modalSaida"
-        class="modal-saida"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="tituloModal">
-
-        <div class="modal-conteudo">
-
-            <h2 id="tituloModal">🚪 Sair do sistema?</h2>
-
-            <p>Tem certeza de que deseja encerrar sua sessão?</p>
-
-            <div class="modal-botoes">
-
-                <button
-                    type="button"
-                    class="confirmar-sim"
-                    onclick="window.location.href='/logout'">
-                    Sim, sair
-                </button>
-
-                <button
-                    type="button"
-                    class="confirmar-cancelar"
-                    onclick="fecharConfirmacao()">
-                    Cancelar
-                </button>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="pagina">
-
-        <img
-            src="{{ url_for('static', filename='logo_kaiko.png') }}"
-            class="logo"
-            alt="Kaiko">
-
-        <div class="painel">
-
-            <h1>Bem-vindo ao <span>sistema!</span></h1>
-
-            <p>
-                Gerencie o seu almoxarifado de forma simples,
-                rápida e organizada.
-            </p>
-
-            <div class="botoes">
-
-                <a href="/cadastrar" class="botao cadastrar">
-                    <span class="icone">📦</span>
-                    <span>Cadastrar<br>Produto</span>
-                    <strong>›</strong>
-                </a>
-
-                <a href="/fornecedor" class="botao fornecedor">
-                    <span class="icone">🏢</span>
-                    <span>Cadastrar<br>Fornecedor</span>
-                    <strong>›</strong>
-                </a>
-
-                <a href="/entrada" class="botao entrada">
-                    <span class="icone">📄</span>
-                    <span>Entrada de<br>Material</span>
-                    <strong>›</strong>
-                </a>
-
-                <a href="/saida" class="botao saida">
-                    <span class="icone">📄</span>
-                    <span>Saída de<br>Material</span>
-                    <strong>›</strong>
-                </a>
-
-                <a href="/estoque" class="botao estoque">
-                    <span class="icone">🔍</span>
-                    <span>Consultar<br>Estoque</span>
-                    <strong>›</strong>
-                </a>
-
-                <a href="/historico" class="botao historico">
-                    <span class="icone">📋</span>
-                    <span>Histórico de<br>Movimentações</span>
-                    <strong>›</strong>
-                </a>
-
+        <div class="barra-superior">
+            <div class="usuario-logado">
+                👤 Usuário: <strong>{{ session.get('usuario', 'Usuário') }}</strong>
             </div>
 
+            <a class="btn botao-sair"
+               href="{{ url_for('logout') }}"
+               onclick="return confirm('Deseja realmente sair do sistema?');">
+                🚪 Sair do sistema
+            </a>
         </div>
-    </div>
 
-    <script>
-        function confirmarSaida() {
-            document.getElementById("modalSaida").style.display = "flex";
-        }
+        <section class="hero">
+            <img
+                src="{{ url_for('static', filename='logo-jc.png') }}"
+                alt="JC Sistema"
+                onerror="this.style.display='none';"
+            >
+            <h1>JC Sistema</h1>
+            <p>Controle de estoque e almoxarifado</p>
+        </section>
 
-        function fecharConfirmacao() {
-            document.getElementById("modalSaida").style.display = "none";
-        }
+        <h2 class="titulo-secao">📦 Menu principal</h2>
 
-        document.addEventListener("keydown", function(evento) {
-            if (evento.key === "Escape") {
-                fecharConfirmacao();
-            }
-        });
+        <section class="atalhos">
+            <a class="atalho verde" href="{{ url_for('cadastrar') }}">
+                <span class="icone">📦</span>
+                <div>
+                    <h2>Cadastrar produto</h2>
+                    <p>Registre produtos e seus dados no sistema.</p>
+                </div>
+            </a>
 
-        document.getElementById("modalSaida").addEventListener("click", function(evento) {
-            if (evento.target === this) {
-                fecharConfirmacao();
-            }
-        });
-    </script>
+            <a class="atalho azul" href="{{ url_for('fornecedor') }}">
+                <span class="icone">🏢</span>
+                <div>
+                    <h2>Fornecedores</h2>
+                    <p>Cadastre e organize os fornecedores.</p>
+                </div>
+            </a>
 
+            <a class="atalho laranja" href="{{ url_for('entrada') }}">
+                <span class="icone">📥</span>
+                <div>
+                    <h2>Entrada de material</h2>
+                    <p>Registre materiais recebidos no estoque.</p>
+                </div>
+            </a>
+
+            <a class="atalho vermelho" href="{{ url_for('saida') }}">
+                <span class="icone">📤</span>
+                <div>
+                    <h2>Saída de material</h2>
+                    <p>Registre retiradas e baixas de estoque.</p>
+                </div>
+            </a>
+
+            <a class="atalho roxo" href="{{ url_for('estoque') }}">
+                <span class="icone">📊</span>
+                <div>
+                    <h2>Consultar estoque</h2>
+                    <p>Consulte produtos, quantidades e lotes.</p>
+                </div>
+            </a>
+
+            <a class="atalho escuro" href="{{ url_for('historico') }}">
+                <span class="icone">🧾</span>
+                <div>
+                    <h2>Histórico de movimentações</h2>
+                    <p>Consulte os registros de entradas e saídas.</p>
+                </div>
+            </a>
+
+            <a class="atalho azul" href="{{ url_for('relatorio_fornecedores') }}">
+                <span class="icone">📋</span>
+                <div>
+                    <h2>Relatório de fornecedores</h2>
+                    <p>Visualize a relação de fornecedores cadastrados.</p>
+                </div>
+            </a>
+        </section>
+
+        <section class="ajuda-card">
+            <h2>💬 Precisa de ajuda?</h2>
+            <p>Entre em contato pelo WhatsApp para tirar suas dúvidas.</p>
+
+            <a
+                class="whatsapp"
+                href="https://wa.me/5511972514115"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                💚 Falar pelo WhatsApp
+            </a>
+        </section>
+
+        <footer class="rodape">
+            JC Sistema — Almoxarifado<br>
+            Controle de estoque simples e organizado.
+        </footer>
+
+    </main>
 </body>
 </html>

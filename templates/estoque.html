@@ -1,606 +1,301 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Consultar Estoque - Kaiko</title>
-
+    <title>Consultar Estoque | JC Sistema</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
+        * { box-sizing: border-box; }
 
-        .estoque-pagina {
+        body {
+            margin: 0;
             min-height: 100vh;
-            background-image: url("{{ url_for('static', filename='fundo_estoque.png') }}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            padding-bottom: 40px;
+            padding: 28px 16px;
+            background: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
-        .estoque-container {
-            width: 92%;
+        .container {
+            width: 100%;
             max-width: 1200px;
-            margin: 30px auto;
+            margin: auto;
         }
 
-        .estoque-card {
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.20);
+        .painel {
+            padding: 26px;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 14px;
         }
 
-        .estoque-cabecalho {
-            background: linear-gradient(135deg, #5424e8, #7028ff);
-            color: white;
-            padding: 25px 35px;
+        .topo {
             display: flex;
             align-items: center;
-            gap: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
         }
 
-        .estoque-icone {
-            font-size: 48px;
-        }
-
-        .estoque-cabecalho h1 {
+        h1 {
             margin: 0;
-            font-size: 30px;
+            color: #ff8c00;
+            font-size: 27px;
         }
 
-        .estoque-cabecalho p {
-            margin: 5px 0 0;
-            font-size: 16px;
-        }
-
-        .estoque-filtros {
-            padding: 20px 30px;
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 15px;
-        }
-
-        .campo-busca input,
-        .campo-filtro select {
-            width: 100%;
-            height: 46px;
-            box-sizing: border-box;
-            border: 1px solid #d5dbe7;
-            border-radius: 10px;
-            padding: 0 15px;
-            font-size: 15px;
-            background: white;
-            outline: none;
-        }
-
-        .campo-busca input:focus,
-        .campo-filtro select:focus {
-            border-color: #5424e8;
-            box-shadow: 0 0 0 3px rgba(84, 36, 232, 0.10);
-        }
-
-        .tabela-container {
-            padding: 0 30px 20px;
-            overflow-x: auto;
-        }
-
-        .tabela-estoque {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            overflow: hidden;
-            border: 1px solid #e0e5ed;
-            border-radius: 12px;
-        }
-
-        .tabela-estoque th {
-            background: #eef2f8;
-            color: #172033;
-            font-size: 15px;
-            font-weight: 700;
-            text-align: left;
-            padding: 14px 16px;
-            border-bottom: 1px solid #dfe4ec;
-        }
-
-        .tabela-estoque td {
-            padding: 13px 16px;
-            border-bottom: 1px solid #e8ebf0;
-            color: #202838;
-            background: white;
-        }
-
-        .tabela-estoque tr:last-child td {
-            border-bottom: none;
-        }
-
-        .tabela-estoque tr:hover td {
-            background: #f8f9fc;
-        }
-
-        .codigo-produto {
-            font-weight: 600;
-        }
-
-        .nome-produto {
-            font-weight: 500;
-        }
-
-        .lote-produto {
-            color: #333;
-            font-weight: 500;
-        }
-
-        .quantidade-produto {
-            font-weight: 700;
-        }
-
-        .acoes-estoque {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-editar {
-            border: none;
-            background: #1976ed;
-            color: white;
-            padding: 9px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-editar:hover {
-            background: #0d63d5;
-        }
-
-        .btn-excluir {
-            border: none;
-            background: #f12d32;
-            color: white;
-            padding: 9px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-excluir:hover {
-            background: #d91f25;
-        }
-
-        .estoque-rodape {
-            padding: 0 30px 25px;
-            color: #778195;
+        .subtitulo {
+            margin: 8px 0 0;
+            color: #aaa;
             font-size: 14px;
         }
 
-        .sem-produtos {
+        .botao {
+            display: inline-block;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
             text-align: center;
-            padding: 35px;
-            color: #778195;
+            cursor: pointer;
+            white-space: nowrap;
         }
 
-        @media (max-width: 900px) {
-
-            .estoque-filtros {
-                grid-template-columns: 1fr;
-            }
-
-            .acoes-estoque {
-                flex-direction: column;
-            }
-
-            .btn-editar,
-            .btn-excluir {
-                width: 100%;
-            }
-
+        .principal {
+            background: #ff8c00;
+            color: #111;
         }
 
+        .principal:hover { background: #ffa52b; }
+
+        .secundario {
+            background: #333;
+            color: #fff;
+        }
+
+        .secundario:hover { background: #444; }
+
+        .editar {
+            background: #285a88;
+            color: #fff;
+        }
+
+        .excluir {
+            background: #8b2525;
+            color: #fff;
+        }
+
+        .pesquisa {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .pesquisa input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 14px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .pesquisa input:focus {
+            border-color: #ff8c00;
+        }
+
+        .tabela-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #383838;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 760px;
+        }
+
+        th, td {
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-size: 13px;
+        }
+
+        th {
+            background: #292929;
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        td { color: #e5e5e5; }
+
+        tbody tr:hover { background: #252525; }
+
+        tbody tr:last-child td { border-bottom: none; }
+
+        .quantidade {
+            font-weight: bold;
+            color: #ffbd80;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .vazio {
+            padding: 28px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        .mensagem {
+            padding: 12px;
+            margin-bottom: 18px;
+            background: #38251a;
+            color: #ffbd80;
+            border: 1px solid #75451f;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .rodape {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 18px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .painel { padding: 18px 14px; }
+            .topo { align-items: flex-start; }
+            .topo .botao { width: 100%; }
+            .pesquisa { flex-direction: column; }
+            .pesquisa input, .pesquisa .botao { width: 100%; }
+        }
     </style>
-
 </head>
 
 <body>
+    <main class="container">
+        <section class="painel">
+            <header class="topo">
+                <div>
+                    <h1>Consultar Estoque</h1>
+                    <p class="subtitulo">Consulte produtos, códigos, lotes e quantidades disponíveis.</p>
+                </div>
 
-    <div class="estoque-pagina">
+                <a href="{{ url_for('inicio') }}" class="botao secundario">
+                    Voltar ao início
+                </a>
+            </header>
 
+            {% with mensagens = get_flashed_messages() %}
+                {% if mensagens %}
+                    {% for mensagem in mensagens %}
+                        <div class="mensagem">{{ mensagem }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-        <!-- MENU SUPERIOR -->
-
-        <header class="menu">
-
-            <a href="/" class="logo-menu">
-
-                <img
-                    src="{{ url_for('static', filename='logo_kaiko.png') }}"
-                    alt="Kaiko"
+            <form class="pesquisa" method="GET" action="{{ url_for('estoque') }}">
+                <input
+                    type="search"
+                    name="busca"
+                    placeholder="Pesquisar por nome ou código..."
+                    value="{{ request.args.get('busca', '') }}"
+                    aria-label="Pesquisar produtos"
                 >
 
-            </a>
+                <button type="submit" class="botao principal">Pesquisar</button>
 
-
-            <nav>
-
-                <a href="/cadastrar">
-                    📦 Cadastrar Produto
+                <a href="{{ url_for('estoque') }}" class="botao secundario">
+                    Limpar pesquisa
                 </a>
+            </form>
 
-                <a href="/fornecedor">
-                    🏢 Cadastrar Fornecedor
-                </a>
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Lote</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-                <a href="/entrada">
-                    📄 Entrada de Material
-                </a>
-
-                <a href="/saida">
-                    📄 Saída de Material
-                </a>
-
-                <a href="/estoque">
-                    🔍 Consultar Estoque
-                </a>
-
-                <a href="/historico">📋 Histórico de Movimentações</a>
-
-            </nav>
-
-        </header>
-
-
-        <!-- ÁREA DO ESTOQUE -->
-
-        <main class="estoque-container">
-
-            <div class="estoque-card">
-
-
-                <!-- CABEÇALHO -->
-
-                <div class="estoque-cabecalho">
-
-                    <div class="estoque-icone">
-                        🔍
-                    </div>
-
-                    <div>
-
-                        <h1>
-                            Consultar Estoque
-                        </h1>
-
-                        <p>
-                            Visualize todos os produtos cadastrados no almoxarifado.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- FILTROS -->
-
-                <div class="estoque-filtros">
-
-
-                    <div class="campo-busca">
-
-                        <input
-                            type="text"
-                            id="buscarEstoque"
-                            placeholder="🔍  Buscar produto (nome ou código)..."
-                        >
-
-                    </div>
-
-
-                    <div class="campo-filtro">
-
-                        <select id="filtroCategoria">
-
-                            <option value="">
-                                Todas as categorias
-                            </option>
-
-                            <option value="Higiene">
-                                Higiene
-                            </option>
-
-                            <option value="Limpeza">
-                                Limpeza
-                            </option>
-
-                            <option value="Escritório">
-                                Escritório
-                            </option>
-
-                            <option value="Descartáveis">
-                                Descartáveis
-                            </option>
-
-                            <option value="Outros">
-                                Outros
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- TABELA -->
-
-                <div class="tabela-container">
-
-                    <table class="tabela-estoque">
-
-
-                        <thead>
-
+                    <tbody>
+                        {% for produto in produtos %}
                             <tr>
-
-                                <th>
-                                    Código
-                                </th>
-
-                                <th>
-                                    Nome do Produto
-                                </th>
-
-                                <th>
-                                    Lote
-                                </th>
-
-                                <th>
-                                    Quantidade
-                                </th>
-
-                                <th>
-                                    Ações
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="tabelaProdutos">
-
-
-                            {% for produto in produtos %}
-
-                            <tr
-                                data-produto="{{ produto[1] | lower }}"
-                                data-codigo="{{ produto[2] | lower }}"
-                                data-categoria="{{ produto[4] or '' }}"
-                            >
-
-
-                                <td class="codigo-produto">
-
-                                    {{ produto[2] }}
-
-                                </td>
-
-
-                                <td class="nome-produto">
-
-                                    {{ produto[1] }}
-
-                                </td>
-
-
-                                <td class="lote-produto">
-
-                                    {% for lote in lotes %}
-
-                                        {% if lote[1] == produto[0] %}
-
-                                            {{ lote[2] }}<br>
-
-                                        {% endif %}
-
-                                    {% endfor %}
-
-                                </td>
-
-
-                                <td class="quantidade-produto">
-
-                                    {{ produto[3] }}
-
-                                </td>
-
-
+                                <td>{{ produto.codigo }}</td>
+                                <td>{{ produto.nome }}</td>
+                                <td class="quantidade">{{ produto.quantidade }}</td>
                                 <td>
-
-                                    <div class="acoes-estoque">
-
-
-                                        <form
-                                            method="GET"
-                                            action="/editar/{{ produto[0] }}"
+                                    {% if produto.lote and produto.lote != 'SEM LOTE' %}
+                                        {{ produto.lote }}
+                                    {% else %}
+                                        <span style="color:#888;">Não informado</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="acoes">
+                                        <a
+                                            href="{{ url_for('editar', id=produto.id) }}"
+                                            class="botao editar"
                                         >
-
-                                            <button
-                                                type="submit"
-                                                class="btn-editar"
-                                            >
-                                                ✏️ Editar
-                                            </button>
-
-                                        </form>
-
+                                            Editar
+                                        </a>
 
                                         <form
                                             method="POST"
-                                            action="/excluir/{{ produto[0] }}"
-                                            onsubmit="return confirm('Tem certeza que deseja excluir este produto?');"
+                                            action="{{ url_for('excluir_produto', id=produto.id) }}"
+                                            onsubmit="return confirm('Tem certeza de que deseja excluir este produto?');"
                                         >
-
-                                            <button
-                                                type="submit"
-                                                class="btn-excluir"
-                                            >
-                                                🗑️ Excluir
+                                            <button type="submit" class="botao excluir">
+                                                Excluir
                                             </button>
-
                                         </form>
-
-
                                     </div>
-
                                 </td>
-
-
                             </tr>
-
-                            {% else %}
-
+                        {% else %}
                             <tr>
-
-                                <td
-                                    colspan="5"
-                                    class="sem-produtos"
-                                >
-                                    Nenhum produto cadastrado.
+                                <td colspan="5" class="vazio">
+                                    Nenhum produto encontrado.
                                 </td>
-
                             </tr>
-
-                            {% endfor %}
-
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-                <!-- RODAPÉ -->
-
-                <div class="estoque-rodape">
-
-                    Mostrando
-
-                    <strong id="contadorProdutos">
-                        {{ produtos|length }}
-                    </strong>
-
-                    de
-
-                    <strong>
-                        {{ produtos|length }}
-                    </strong>
-
-                    produtos
-
-                </div>
-
-
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
-        </main>
+            <footer class="rodape">
+                <span>Produtos exibidos: {{ produtos|length }}</span>
 
-    </div>
-
-
-    <!-- FILTROS E BUSCA -->
-
-    <script>
-
-        const campoBusca =
-            document.getElementById("buscarEstoque");
-
-        const filtroCategoria =
-            document.getElementById("filtroCategoria");
-
-        const linhas =
-            document.querySelectorAll("#tabelaProdutos tr");
-
-        const contador =
-            document.getElementById("contadorProdutos");
-
-
-        function filtrarProdutos() {
-
-            const busca =
-                campoBusca.value.toLowerCase().trim();
-
-            const categoria =
-                filtroCategoria.value;
-
-            let quantidadeVisivel = 0;
-
-
-            linhas.forEach(function (linha) {
-
-                const produto =
-                    linha.dataset.produto || "";
-
-                const codigo =
-                    linha.dataset.codigo || "";
-
-                const categoriaProduto =
-                    linha.dataset.categoria || "";
-
-
-                const correspondeBusca =
-                    produto.includes(busca) ||
-                    codigo.includes(busca);
-
-
-                const correspondeCategoria =
-                    categoria === "" ||
-                    categoriaProduto === categoria;
-
-
-                if (
-                    correspondeBusca &&
-                    correspondeCategoria
-                ) {
-
-                    linha.style.display = "";
-
-                    quantidadeVisivel++;
-
-                } else {
-
-                    linha.style.display = "none";
-
-                }
-
-            });
-
-
-            contador.textContent =
-                quantidadeVisivel;
-
-        }
-
-
-        campoBusca.addEventListener(
-            "input",
-            filtrarProdutos
-        );
-
-
-        filtroCategoria.addEventListener(
-            "change",
-            filtrarProdutos
-        );
-
-    </script>
-
-
+                <a href="{{ url_for('cadastrar') }}" class="botao principal">
+                    + Cadastrar produto
+                </a>
+            </footer>
+        </section>
+    </main>
 </body>
-
 </html>

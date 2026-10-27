@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Fornecedores | JC Sistema</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 28px 16px;
+            background: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .painel {
+            padding: 26px;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 14px;
+        }
+
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #ff8c00;
+            font-size: 27px;
+        }
+
+        .subtitulo {
+            margin: 8px 0 0;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .principal {
+            background: #ff8c00;
+            color: #111;
+        }
+
+        .principal:hover { background: #ffa52b; }
+
+        .secundario {
+            background: #333;
+            color: #fff;
+        }
+
+        .secundario:hover { background: #444; }
+
+        .pesquisa {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .pesquisa input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 14px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .pesquisa input:focus { border-color: #ff8c00; }
+
+        .tabela-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #383838;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+        th {
+            background: #292929;
+            color: #ff8c00;
+            white-space: nowrap;
+        }
+
+        td { color: #e5e5e5; }
+
+        tbody tr:hover { background: #252525; }
+
+        tbody tr:last-child td { border-bottom: none; }
+
+        .vazio {
+            padding: 30px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        .mensagem {
+            padding: 12px;
+            margin-bottom: 18px;
+            background: #38251a;
+            color: #ffbd80;
+            border: 1px solid #75451f;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .rodape {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .contador {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .painel { padding: 18px 14px; }
+            .topo > a { width: 100%; }
+            .pesquisa { flex-direction: column; }
+            .pesquisa input, .pesquisa .botao { width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <section class="painel">
+            <header class="topo">
+                <div>
+                    <h1>Relatório de Fornecedores</h1>
+                    <p class="subtitulo">
+                        Consulte os dados dos fornecedores cadastrados.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('inicio') }}" class="botao secundario">
+                    Voltar ao início
+                </a>
+            </header>
+
+            {% with mensagens = get_flashed_messages() %}
+                {% if mensagens %}
+                    {% for mensagem in mensagens %}
+                        <div class="mensagem">{{ mensagem }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="GET" action="{{ url_for('relatorio_fornecedores') }}" class="pesquisa">
+                <input
+                    type="search"
+                    name="busca"
+                    value="{{ request.args.get('busca', '') }}"
+                    placeholder="Pesquisar por empresa, CNPJ ou contato..."
+                    aria-label="Pesquisar fornecedores"
+                >
+
+                <button type="submit" class="botao principal">Pesquisar</button>
+
+                <a href="{{ url_for('relatorio_fornecedores') }}" class="botao secundario">
+                    Limpar
+                </a>
+            </form>
+
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>CNPJ</th>
+                            <th>Contato</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th>Endereço</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for fornecedor in fornecedores %}
+                            <tr>
+                                <td>{{ fornecedor.nome }}</td>
+                                <td>{{ fornecedor.cnpj }}</td>
+                                <td>{{ fornecedor.contato or '—' }}</td>
+                                <td>{{ fornecedor.telefone or '—' }}</td>
+                                <td>{{ fornecedor.email or '—' }}</td>
+                                <td>{{ fornecedor.endereco or '—' }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="vazio">
+                                    Nenhum fornecedor encontrado.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="rodape">
+                <span class="contador">
+                    Fornecedores exibidos: {{ fornecedores|length }}
+                </span>
+
+                <a href="{{ url_for('fornecedor') }}" class="botao principal">
+                    + Cadastrar fornecedor
+                </a>
+            </footer>
+        </section>
+    </main>
+</body>
+</html>

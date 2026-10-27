@@ -1,161 +1,247 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
 
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Cadastrar Fornecedor - Kaiko</title>
-
+    <title>Cadastro de Fornecedores | JC Sistema</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 30px 16px;
+            background: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 14px;
+        }
+
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #ff8c00;
+            font-size: 26px;
+        }
+
+        .subtitulo {
+            margin: 8px 0 0;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .campo { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus, textarea:focus { border-color: #ff8c00; }
+
+        .dica {
+            display: block;
+            margin-top: 6px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .principal {
+            background: #ff8c00;
+            color: #111;
+        }
+
+        .principal:hover { background: #ffa52b; }
+
+        .secundario {
+            background: #333;
+            color: #fff;
+        }
+
+        .secundario:hover { background: #444; }
+
+        .mensagem {
+            padding: 12px;
+            margin-bottom: 18px;
+            background: #38251a;
+            color: #ffbd80;
+            border: 1px solid #75451f;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 500px) {
+            .container { padding: 22px 18px; }
+            .botoes { flex-direction: column; }
+            .botao { width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
-
-    <div class="pagina-cadastro">
-
-        <header class="menu">
-
-            <a href="/" class="logo-menu">
-                <img src="{{ url_for('static', filename='logo_kaiko.png') }}" alt="Kaiko">
-            </a>
-
-            <nav>
-
-                <a href="/cadastrar">📦 Cadastrar Produto</a>
-
-                <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
-
-                <a href="/entrada">📄 Entrada de Material</a>
-
-                <a href="/saida">📄 Saída de Material</a>
-
-                <a href="/estoque">🔍 Consultar Estoque</a>
-
-                <a href="/historico">📋 Histórico de Movimentações</a>
-
-            </nav>
-
-        </header>
-
-
-        <main class="cadastro-container">
-
-            <div class="cadastro-card">
-
-                <div class="cadastro-titulo titulo-fornecedor">
-
-                    <span>🏢</span>
-
-                    <h1>Cadastrar Fornecedor</h1>
-
-                </div>
-
-
-                <form method="POST" action="/fornecedor">
-
-
-                    <div class="linha-form">
-
-                        <div class="campo">
-
-                            <label for="nome">
-                                Nome do Fornecedor <span>*</span>
-                            </label>
-
-                            <input
-                                type="text"
-                                id="nome"
-                                name="nome"
-                                placeholder="Digite o nome do fornecedor"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="campo">
-
-                            <label for="cnpj">
-                                CNPJ
-                            </label>
-
-                            <input
-                                type="text"
-                                id="cnpj"
-                                name="cnpj"
-                                placeholder="Digite o CNPJ"
-                                required
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="linha-form">
-
-                        <div class="campo">
-
-                            <label for="telefone">
-                                Telefone
-                            </label>
-
-                            <input
-                                type="text"
-                                id="telefone"
-                                name="telefone"
-                                placeholder="Digite o telefone"
-                            >
-
-                        </div>
-
-
-                        <div class="campo">
-
-                            <label for="email">
-                                E-mail
-                            </label>
-
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="Digite o e-mail"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="acoes">
-
-                        <button
-                            type="submit"
-                            class="btn-salvar"
-                        >
-                            💾 Salvar Fornecedor
-                        </button>
-
-                        <button
-                            type="reset"
-                            class="btn-limpar"
-                        >
-                            🔄 Limpar Campos
-                        </button>
-
-                    </div>
-
-
-                </form>
-
+    <main class="container">
+        <header class="topo">
+            <div>
+                <h1>Cadastrar Fornecedor</h1>
+                <p class="subtitulo">Registre os dados dos fornecedores do almoxarifado.</p>
             </div>
 
-        </main>
+            <a href="{{ url_for('inicio') }}" class="botao secundario">
+                Voltar ao início
+            </a>
+        </header>
 
-    </div>
+        {% with mensagens = get_flashed_messages() %}
+            {% if mensagens %}
+                {% for mensagem in mensagens %}
+                    <div class="mensagem">{{ mensagem }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
+        <form method="POST" action="{{ url_for('fornecedor') }}">
+            <div class="campo">
+                <label for="nome">Nome do fornecedor ou empresa *</label>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Digite o nome da empresa"
+                    maxlength="150"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label for="cnpj">CNPJ *</label>
+                <input
+                    type="text"
+                    id="cnpj"
+                    name="cnpj"
+                    placeholder="00.000.000/0000-00"
+                    maxlength="18"
+                    required
+                >
+                <small class="dica">O CNPJ é obrigatório.</small>
+            </div>
+
+            <div class="campo">
+                <label for="contato">Nome do contato</label>
+                <input
+                    type="text"
+                    id="contato"
+                    name="contato"
+                    placeholder="Nome do representante"
+                    maxlength="120"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="telefone">Telefone</label>
+                <input
+                    type="tel"
+                    id="telefone"
+                    name="telefone"
+                    placeholder="(11) 99999-9999"
+                    maxlength="20"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="email">E-mail</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="contato@empresa.com.br"
+                    maxlength="150"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="endereco">Endereço</label>
+                <input
+                    type="text"
+                    id="endereco"
+                    name="endereco"
+                    placeholder="Rua, número, cidade e estado"
+                    maxlength="250"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="observacao">Observações</label>
+                <textarea
+                    id="observacao"
+                    name="observacao"
+                    rows="3"
+                    placeholder="Produtos fornecidos, condições de pagamento etc."
+                    maxlength="500"
+                ></textarea>
+            </div>
+
+            <div class="botoes">
+                <button type="submit" class="botao principal">
+                    Cadastrar fornecedor
+                </button>
+
+                <a href="{{ url_for('inicio') }}" class="botao secundario">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </main>
 </body>
-
 </html>

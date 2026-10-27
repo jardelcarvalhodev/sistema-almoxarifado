@@ -1,23 +1,23 @@
 
-/* =====================================================
+/* ==================================================
    JC SISTEMA — ALMOXARIFADO
-   Folha de estilos principal
-   ===================================================== */
+   Estilo principal
+   ================================================== */
 
 :root {
     --preto: #171717;
-    --preto-claro: #252525;
+    --preto-secundario: #242424;
     --laranja: #f58220;
-    --laranja-escuro: #d9680c;
+    --laranja-hover: #dc6d10;
     --branco: #ffffff;
-    --cinza: #f3f4f6;
-    --cinza-texto: #4b5563;
+    --fundo: #f4f5f7;
+    --texto: #202938;
     --borda: #d1d5db;
     --verde: #0ab85a;
-    --azul: #2676df;
-    --roxo: #8152d8;
     --vermelho: #dc3545;
-    --sombra: 0 8px 25px rgba(0, 0, 0, 0.14);
+    --azul: #2878d8;
+    --roxo: #8052d6;
+    --sombra: 0 5px 20px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -33,16 +33,16 @@ body {
     min-height: 100vh;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    color: #1f2937;
-    background-color: #f4f4f4;
+    color: var(--texto);
+    background-color: var(--fundo);
     background-image:
         linear-gradient(
             rgba(255, 255, 255, 0.88),
             rgba(255, 255, 255, 0.88)
         ),
         url("/static/fundo_estoque.png");
-    background-size: cover;
     background-position: center;
+    background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
@@ -53,7 +53,7 @@ img {
 }
 
 a {
-    color: var(--laranja-escuro);
+    color: var(--laranja-hover);
     text-decoration: none;
 }
 
@@ -61,9 +61,18 @@ a:hover {
     text-decoration: none;
 }
 
-/* =====================================================
-   CABEÇALHO
-   ===================================================== */
+h1,
+h2,
+h3,
+h4 {
+    line-height: 1.3;
+}
+
+p {
+    line-height: 1.6;
+}
+
+/* CABEÇALHO */
 
 header {
     width: 100%;
@@ -76,8 +85,8 @@ header.cabecalho {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 15px;
-    padding: 18px 28px;
+    gap: 16px;
+    padding: 20px 28px;
     background: var(--preto);
     color: var(--branco);
 }
@@ -91,62 +100,39 @@ header h1 {
 
 .logo {
     display: block;
-    width: min(620px, 75vw);
+    width: min(620px, 80vw);
     max-height: 220px;
+    margin: 24px auto;
     object-fit: contain;
-    margin: 25px auto;
 }
 
 .logo-jc {
-    max-width: 180px;
-    max-height: 100px;
+    width: 160px;
+    max-height: 90px;
     object-fit: contain;
 }
 
-/* =====================================================
-   PAINÉIS E CONTEÚDO
-   ===================================================== */
-
-.painel {
-    width: min(1100px, 94%);
-    margin: 25px auto;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.93);
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: 16px;
-    box-shadow: var(--sombra);
-    backdrop-filter: blur(8px);
-}
+/* CONTEÚDO E PAINÉIS */
 
 .container,
-.conteudo,
-main {
+.conteudo {
     width: 100%;
-}
-
-.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px;
 }
 
-h1,
-h2,
-h3 {
-    line-height: 1.3;
+.painel {
+    width: min(1100px, 94%);
+    margin: 25px auto;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--sombra);
 }
 
-h2 {
-    margin-top: 0;
-}
-
-p {
-    line-height: 1.6;
-}
-
-/* =====================================================
-   BOTÕES DA PÁGINA INICIAL
-   ===================================================== */
+/* MENU PRINCIPAL */
 
 .botoes,
 .menu-botoes,
@@ -168,27 +154,25 @@ p {
     justify-content: center;
     min-height: 75px;
     padding: 18px;
-    border: none;
+    border: 0;
     border-radius: 12px;
     color: var(--branco);
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
 }
 
 .botao:hover,
 .botao-menu:hover,
 .menu-botoes a:hover,
 .grid-botoes a:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 9px 18px rgba(0, 0, 0, 0.18);
-    filter: brightness(1.05);
+    color: var(--branco);
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow: 0 7px 16px rgba(0, 0, 0, 0.17);
 }
 
 .botao-cadastrar {
@@ -215,9 +199,7 @@ p {
     background: linear-gradient(135deg, #374151, #111827);
 }
 
-/* =====================================================
-   FORMULÁRIOS
-   ===================================================== */
+/* FORMULÁRIOS */
 
 form {
     width: 100%;
@@ -235,7 +217,7 @@ form {
 label {
     display: block;
     margin-bottom: 6px;
-    color: #1f2937;
+    color: var(--texto);
     font-weight: 600;
 }
 
@@ -247,14 +229,12 @@ textarea {
     padding: 12px 14px;
     border: 1px solid var(--borda);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--branco);
     color: #111827;
     font-family: inherit;
     font-size: 16px;
     outline: none;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 textarea {
@@ -275,12 +255,6 @@ input[type="radio"] {
     min-height: auto;
 }
 
-input[type="submit"],
-button,
-.botao-acao {
-    font-family: inherit;
-}
-
 button,
 input[type="submit"],
 .btn {
@@ -290,20 +264,22 @@ input[type="submit"],
     gap: 8px;
     min-height: 42px;
     padding: 11px 18px;
-    border: none;
+    border: 0;
     border-radius: 8px;
     background: var(--laranja);
     color: var(--branco);
+    font-family: inherit;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition: background 0.2s, transform 0.2s;
 }
 
 button:hover,
 input[type="submit"]:hover,
 .btn:hover {
-    background: var(--laranja-escuro);
+    background: var(--laranja-hover);
+    color: var(--branco);
 }
 
 button:active,
@@ -331,22 +307,20 @@ button:active,
     background: #b91c1c;
 }
 
-/* =====================================================
-   TABELAS
-   ===================================================== */
+/* TABELAS */
 
 .tabela-container,
 .table-responsive {
     width: 100%;
-    overflow-x: auto;
     margin: 20px 0;
+    overflow-x: auto;
     border-radius: 10px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background: #ffffff;
+    background: var(--branco);
     font-size: 14px;
 }
 
@@ -382,9 +356,7 @@ td .btn {
     white-space: nowrap;
 }
 
-/* =====================================================
-   MENSAGENS
-   ===================================================== */
+/* ALERTAS E MENSAGENS */
 
 .alerta,
 .mensagem,
@@ -397,28 +369,26 @@ td .btn {
 
 .alerta-sucesso,
 .mensagem-sucesso {
+    border: 1px solid #86efac;
     background: #dcfce7;
     color: #166534;
-    border: 1px solid #86efac;
 }
 
 .alerta-erro,
 .mensagem-erro {
+    border: 1px solid #fca5a5;
     background: #fee2e2;
     color: #991b1b;
-    border: 1px solid #fca5a5;
 }
 
 .alerta-aviso,
 .mensagem-aviso {
+    border: 1px solid #fcd34d;
     background: #fef3c7;
     color: #92400e;
-    border: 1px solid #fcd34d;
 }
 
-/* =====================================================
-   LOGIN E CADASTRO DE USUÁRIO
-   ===================================================== */
+/* LOGIN E CADASTRO DE USUÁRIO */
 
 .login-container,
 .cadastro-container {
@@ -426,14 +396,14 @@ td .btn {
     margin: 45px auto;
     padding: 32px;
     border-radius: 16px;
-    background: #ffffff;
+    background: var(--branco);
     box-shadow: var(--sombra);
 }
 
 .login-container h1,
 .cadastro-container h1 {
-    text-align: center;
     color: var(--preto);
+    text-align: center;
 }
 
 .login-container button,
@@ -442,9 +412,7 @@ td .btn {
     margin-top: 10px;
 }
 
-/* =====================================================
-   HISTÓRICO E FILTROS
-   ===================================================== */
+/* FILTROS DO HISTÓRICO */
 
 .filtros,
 .filtros-historico {
@@ -459,6 +427,8 @@ td .btn {
 .filtros-historico > div {
     flex: 1 1 170px;
 }
+
+/* ETIQUETAS DE MOVIMENTAÇÃO */
 
 .badge,
 .etiqueta {
@@ -479,24 +449,22 @@ td .btn {
     color: #991b1b;
 }
 
-/* =====================================================
-   AJUDA E RODAPÉ
-   ===================================================== */
+/* AJUDA, WHATSAPP E RODAPÉ */
 
 .ajuda,
 .secao-ajuda {
     width: min(950px, 94%);
     margin: 30px auto;
     padding: 24px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.94);
     border-radius: 14px;
+    background: rgba(255, 255, 255, 0.94);
     box-shadow: var(--sombra);
+    text-align: center;
 }
 
 .botao-whatsapp {
     background: #25d366;
-    color: #ffffff;
+    color: var(--branco);
 }
 
 .botao-whatsapp:hover {
@@ -510,9 +478,7 @@ footer {
     text-align: center;
 }
 
-/* =====================================================
-   RESPONSIVIDADE
-   ===================================================== */
+/* RESPONSIVIDADE */
 
 @media (max-width: 1000px) {
     .painel {
@@ -520,7 +486,8 @@ footer {
         padding: 22px;
     }
 
-    .container {
+    .container,
+    .conteudo {
         padding: 16px;
     }
 
@@ -563,8 +530,8 @@ footer {
 
     .login-container,
     .cadastro-container {
-        padding: 24px 18px;
         margin: 25px auto;
+        padding: 24px 18px;
     }
 
     .filtros,

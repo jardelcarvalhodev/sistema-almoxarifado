@@ -1,15 +1,11 @@
 
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Login Administrativo - Kaiko</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <title>Login | JC Sistema</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
         * {
@@ -17,135 +13,150 @@
         }
 
         body {
-            min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #202b3f, #101a2b);
+            padding: 20px;
+            background: #111;
+            color: #fff;
             font-family: Arial, sans-serif;
         }
 
         .login-container {
             width: 100%;
             max-width: 420px;
-            padding: 35px;
-            background: #ffffff;
-            border-radius: 18px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-            text-align: center;
+            padding: 38px 32px;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .login-logo {
-            width: 160px;
-            max-width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .login-container h1 {
-            margin: 5px 0 10px;
-            color: #202b3f;
-            font-size: 26px;
-        }
-
-        .login-container p {
-            margin-bottom: 25px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        .campo-login {
-            margin-bottom: 18px;
-            text-align: left;
-        }
-
-        .campo-login label {
+        .logo {
             display: block;
-            margin-bottom: 7px;
-            color: #334155;
+            width: 115px;
+            height: 115px;
+            object-fit: contain;
+            margin: 0 auto 16px;
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            font-size: 27px;
+            color: #ff8c00;
+        }
+
+        .subtitulo {
+            margin: 10px 0 28px;
+            text-align: center;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: bold;
         }
 
-        .campo-login input {
+        .campo input {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #cbd5e1;
+            padding: 13px 14px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #444;
             border-radius: 8px;
-            font-size: 16px;
             outline: none;
+            font-size: 15px;
         }
 
-        .campo-login input:focus {
-            border-color: #09b95a;
-            box-shadow: 0 0 0 3px rgba(9, 185, 90, 0.12);
+        .campo input:focus {
+            border-color: #ff8c00;
         }
 
         .botao-login {
             width: 100%;
             padding: 14px;
+            margin-top: 6px;
+            background: #ff8c00;
+            color: #111;
             border: none;
-            border-radius: 9px;
-            background: #09b95a;
-            color: #ffffff;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
         .botao-login:hover {
-            background: #078f45;
+            background: #ffa52b;
         }
 
-        .erro-login {
-            padding: 12px;
-            margin-bottom: 18px;
-            border-radius: 8px;
-            color: #991b1b;
-            background: #fee2e2;
+        .mensagem {
+            padding: 11px;
+            margin-bottom: 16px;
+            background: #38251a;
+            color: #ffbd80;
+            border: 1px solid #75451f;
+            border-radius: 7px;
             font-size: 14px;
         }
 
-        .login-rodape {
-            margin-top: 24px;
-            color: #94a3b8;
-            font-size: 12px;
+        .cadastro {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 14px;
+            color: #bbb;
         }
 
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 25px 20px;
-            }
+        .cadastro a {
+            color: #ff8c00;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .cadastro a:hover {
+            text-decoration: underline;
+        }
+
+        .ajuda {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
         }
     </style>
 </head>
 
 <body>
-
     <main class="login-container">
-
         <img
-            src="{{ url_for('static', filename='logo_kaiko.png') }}"
-            alt="Logo Kaiko"
-            class="login-logo"
+            src="{{ url_for('static', filename='logo-jc.png') }}"
+            alt="Logo JC Sistema"
+            class="logo"
         >
 
-        <h1>Bem-vindo ao Kaiko!</h1>
+        <h1>JC Sistema</h1>
+        <p class="subtitulo">Sistema de Controle de Almoxarifado</p>
 
-        <p>Faça login para acessar o sistema de estoque.</p>
-
-        {% if erro %}
-            <div class="erro-login" role="alert">
-                {{ erro }}
-            </div>
-        {% endif %}
+        {% with mensagens = get_flashed_messages() %}
+            {% if mensagens %}
+                {% for mensagem in mensagens %}
+                    <div class="mensagem">{{ mensagem }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <form method="POST" action="{{ url_for('login') }}">
-
-            <div class="campo-login">
+            <div class="campo">
                 <label for="usuario">Usuário</label>
-
                 <input
                     type="text"
                     id="usuario"
@@ -157,9 +168,8 @@
                 >
             </div>
 
-            <div class="campo-login">
+            <div class="campo">
                 <label for="senha">Senha</label>
-
                 <input
                     type="password"
                     id="senha"
@@ -173,14 +183,16 @@
             <button type="submit" class="botao-login">
                 Entrar no sistema
             </button>
-
         </form>
 
-        <div class="login-rodape">
-            Kaiko — Sistema de Controle de Estoque
+        <div class="cadastro">
+            Ainda não tem uma conta?
+            <a href="{{ url_for('cadastro_usuario') }}">Cadastre-se</a>
         </div>
 
+        <div class="ajuda">
+            JC Sistema · Controle de Almoxarifado
+        </div>
     </main>
-
 </body>
 </html>

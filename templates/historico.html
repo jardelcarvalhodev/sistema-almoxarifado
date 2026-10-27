@@ -1,354 +1,382 @@
 
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Movimentações - Kaiko</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <title>Histórico de Movimentações | JC Sistema</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
-        .historico-container {
-            width: 94%;
-            max-width: 1500px;
-            margin: 30px auto;
-        }
+        * { box-sizing: border-box; }
 
-        .historico-card {
-            background: rgba(255, 255, 255, 0.97);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        .historico-cabecalho {
-            background: linear-gradient(135deg, #344054, #172033);
-            color: white;
-            padding: 28px 32px;
-        }
-
-        .historico-cabecalho h1 {
-            margin: 0 0 8px;
-        }
-
-        .historico-cabecalho p {
+        body {
             margin: 0;
+            min-height: 100vh;
+            padding: 28px 16px;
+            background: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
-        .historico-filtros {
-            padding: 25px;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 12px;
-            align-items: end;
-        }
-
-        .historico-filtros label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-            color: #263247;
-        }
-
-        .historico-filtros input,
-        .historico-filtros select {
+        .container {
             width: 100%;
-            height: 43px;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            background: white;
+            max-width: 1250px;
+            margin: auto;
         }
 
-        .btn-filtrar,
-        .btn-limpar {
-            display: inline-flex;
-            height: 43px;
-            padding: 0 18px;
+        .painel {
+            padding: 26px;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 14px;
+        }
+
+        .topo {
+            display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #ff8c00;
+            font-size: 27px;
+        }
+
+        .subtitulo {
+            margin: 8px 0 0;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 10px 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 7px;
+            font-size: 13px;
             font-weight: bold;
             text-decoration: none;
+            text-align: center;
             cursor: pointer;
         }
 
-        .btn-filtrar {
-            background: #344054;
-            color: white;
+        .principal {
+            background: #ff8c00;
+            color: #111;
         }
 
-        .btn-limpar {
-            background: #e5e7eb;
-            color: #222;
-            margin-left: 5px;
+        .principal:hover { background: #ffa52b; }
+
+        .secundario {
+            background: #333;
+            color: #fff;
         }
 
-        .historico-tabela-container {
-            padding: 0 25px 25px;
-            overflow-x: auto;
+        .secundario:hover { background: #444; }
+
+        .perigo {
+            background: #8b2525;
+            color: #fff;
         }
 
-        .historico-tabela {
+        .perigo:hover { background: #a82c2c; }
+
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 22px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #ddd;
+        }
+
+        input, select {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 1100px;
+            padding: 11px 12px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
         }
 
-        .historico-tabela th {
-            background: #eef2f7;
-            color: #263247;
-            padding: 14px;
+        input:focus, select:focus { border-color: #ff8c00; }
+
+        .tabela-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #383838;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 950px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px 12px;
             text-align: left;
+            border-bottom: 1px solid #333;
+            font-size: 13px;
+        }
+
+        th {
+            background: #292929;
+            color: #ff8c00;
             white-space: nowrap;
         }
 
-        .historico-tabela td {
-            padding: 13px 14px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #303846;
-        }
+        td { color: #e5e5e5; }
 
-        .historico-tabela tr:hover td {
-            background: #f8fafc;
-        }
+        tbody tr:hover { background: #252525; }
 
-        .tipo-entrada {
+        tbody tr:last-child td { border-bottom: none; }
+
+        .tipo {
             display: inline-block;
-            background: #dcfce7;
-            color: #166534;
-            padding: 6px 10px;
-            border-radius: 20px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 11px;
             font-weight: bold;
-            font-size: 12px;
+            white-space: nowrap;
         }
 
-        .tipo-saida {
-            display: inline-block;
-            background: #ffedd5;
-            color: #9a3412;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 12px;
+        .entrada {
+            background: #183b27;
+            color: #80e6a6;
         }
 
-        .historico-vazio {
+        .saida {
+            background: #482020;
+            color: #ff9999;
+        }
+
+        .cadastro {
+            background: #3c2d53;
+            color: #d4b5ff;
+        }
+
+        .outro {
+            background: #333;
+            color: #ddd;
+        }
+
+        .vazio {
+            padding: 30px;
             text-align: center;
-            padding: 35px !important;
-            color: #667085 !important;
+            color: #aaa;
         }
 
-        .historico-rodape {
-            padding: 0 25px 25px;
-            color: #667085;
+        .mensagem {
+            padding: 12px;
+            margin-bottom: 18px;
+            background: #38251a;
+            color: #ffbd80;
+            border: 1px solid #75451f;
+            border-radius: 7px;
+            font-size: 14px;
         }
 
-        @media (max-width: 1000px) {
-            .historico-filtros {
-                grid-template-columns: 1fr 1fr;
-            }
+        .rodape {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .contador {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
         }
 
         @media (max-width: 600px) {
-            .historico-filtros {
-                grid-template-columns: 1fr;
-            }
-
-            .historico-cabecalho {
-                padding: 22px;
-            }
+            .painel { padding: 18px 14px; }
+            .topo { align-items: flex-start; }
+            .topo > a { width: 100%; }
+            .filtros { flex-direction: column; align-items: stretch; }
+            .campo { width: 100%; }
+            .acoes { flex-direction: column; align-items: stretch; }
+            .acoes .botao { width: 100%; }
         }
     </style>
 </head>
 
 <body>
-
-    <div class="pagina-entrada">
-
-        <header class="menu">
-
-            <a href="/" class="logo-menu">
-                <img
-                    src="{{ url_for('static', filename='logo_kaiko.png') }}"
-                    alt="Kaiko"
-                >
-            </a>
-
-            <nav>
-                <a href="/cadastrar">📦 Cadastrar Produto</a>
-                <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
-                <a href="/entrada">📄 Entrada de Material</a>
-                <a href="/saida">📄 Saída de Material</a>
-                <a href="/estoque">🔍 Consultar Estoque</a>
-                <a href="/historico">📋 Histórico</a>
-            </nav>
-
-        </header>
-
-        <main class="historico-container">
-
-            <div class="historico-card">
-
-                <div class="historico-cabecalho">
-                    <h1>📋 Histórico de Movimentações</h1>
-                    <p>
-                        Consulte os registros de entradas e saídas do almoxarifado.
+    <main class="container">
+        <section class="painel">
+            <header class="topo">
+                <div>
+                    <h1>Histórico de Movimentações</h1>
+                    <p class="subtitulo">
+                        Consulte os registros de entradas, saídas e cadastros de produtos.
                     </p>
                 </div>
 
-                <form method="GET" action="/historico"
-                      class="historico-filtros">
+                <a href="{{ url_for('inicio') }}" class="botao secundario">
+                    Voltar ao início
+                </a>
+            </header>
 
-                    <div>
-                        <label for="busca">Buscar</label>
-                        <input
-                            type="text"
-                            id="busca"
-                            name="busca"
-                            value="{{ busca }}"
-                            placeholder="Produto, código, lote ou fornecedor"
-                        >
-                    </div>
+            {% with mensagens = get_flashed_messages() %}
+                {% if mensagens %}
+                    {% for mensagem in mensagens %}
+                        <div class="mensagem">{{ mensagem }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-                    <div>
-                        <label for="tipo">Movimentação</label>
-                        <select id="tipo" name="tipo">
-                            <option value="">Todas</option>
-                            <option value="ENTRADA"
-                                {% if tipo == 'ENTRADA' %}selected{% endif %}>
-                                Entrada
-                            </option>
-                            <option value="SAÍDA"
-                                {% if tipo == 'SAÍDA' %}selected{% endif %}>
-                                Saída
-                            </option>
-                        </select>
-                    </div>
+            <form method="GET" action="{{ url_for('historico') }}" class="filtros">
+                <div class="campo">
+                    <label for="busca">Produto ou código</label>
+                    <input
+                        type="search"
+                        id="busca"
+                        name="busca"
+                        value="{{ request.args.get('busca', '') }}"
+                        placeholder="Digite para pesquisar"
+                    >
+                </div>
 
-                    <div>
-                        <label for="data_inicio">Data inicial</label>
-                        <input
-                            type="date"
-                            id="data_inicio"
-                            name="data_inicio"
-                            value="{{ data_inicio }}"
-                        >
-                    </div>
+                <div class="campo">
+                    <label for="tipo">Tipo de movimentação</label>
+                    <select id="tipo" name="tipo">
+                        <option value="">Todas</option>
+                        <option value="ENTRADA" {% if request.args.get('tipo') == 'ENTRADA' %}selected{% endif %}>Entrada</option>
+                        <option value="SAIDA" {% if request.args.get('tipo') == 'SAIDA' %}selected{% endif %}>Saída</option>
+                        <option value="CADASTRO" {% if request.args.get('tipo') == 'CADASTRO' %}selected{% endif %}>Cadastro de produto</option>
+                    </select>
+                </div>
 
-                    <div>
-                        <label for="data_fim">Data final</label>
-                        <input
-                            type="date"
-                            id="data_fim"
-                            name="data_fim"
-                            value="{{ data_fim }}"
-                        >
-                    </div>
+                <div class="campo">
+                    <label for="data_inicio">Data inicial</label>
+                    <input
+                        type="date"
+                        id="data_inicio"
+                        name="data_inicio"
+                        value="{{ request.args.get('data_inicio', '') }}"
+                    >
+                </div>
 
-                    <div>
-                        <button class="btn-filtrar" type="submit">
-                            🔍 Filtrar
-                        </button>
+                <div class="campo">
+                    <label for="data_fim">Data final</label>
+                    <input
+                        type="date"
+                        id="data_fim"
+                        name="data_fim"
+                        value="{{ request.args.get('data_fim', '') }}"
+                    >
+                </div>
 
-                        <a href="/historico" class="btn-limpar">
-                            Limpar
-                        </a>
-                    </div>
+                <button type="submit" class="botao principal">Filtrar</button>
+                <a href="{{ url_for('historico') }}" class="botao secundario">Limpar</a>
+            </form>
 
-                </form>
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data e hora</th>
+                            <th>Tipo</th>
+                            <th>Produto</th>
+                            <th>Código</th>
+                            <th>Quantidade</th>
+                            <th>Lote</th>
+                            <th>Observação</th>
+                            <th>Usuário</th>
+                        </tr>
+                    </thead>
 
-                <div class="historico-tabela-container">
-
-                    <table class="historico-tabela">
-
-                        <thead>
+                    <tbody>
+                        {% for movimento in movimentacoes %}
                             <tr>
-                                <th>Data</th>
-                                <th>Horário</th>
-                                <th>Movimentação</th>
-                                <th>Produto</th>
-                                <th>Código</th>
-                                <th>Lote</th>
-                                <th>Quantidade</th>
-                                <th>Fornecedor</th>
-                                <th>Nota Fiscal</th>
-                                <th>Valor Total</th>
-                                <th>Observações</th>
+                                <td>{{ movimento.data }}</td>
+
+                                <td>
+                                    {% set tipo_movimento = movimento.tipo|string|upper %}
+
+                                    {% if tipo_movimento == 'ENTRADA' %}
+                                        <span class="tipo entrada">ENTRADA</span>
+                                    {% elif tipo_movimento == 'SAIDA' %}
+                                        <span class="tipo saida">SAÍDA</span>
+                                    {% elif tipo_movimento == 'CADASTRO' %}
+                                        <span class="tipo cadastro">CADASTRO</span>
+                                    {% else %}
+                                        <span class="tipo outro">{{ movimento.tipo }}</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>{{ movimento.nome_produto or '—' }}</td>
+                                <td>{{ movimento.codigo or '—' }}</td>
+                                <td>{{ movimento.quantidade if movimento.quantidade is not none else '—' }}</td>
+                                <td>{{ movimento.lote or '—' }}</td>
+                                <td>{{ movimento.observacao or '—' }}</td>
+                                <td>{{ movimento.usuario or '—' }}</td>
                             </tr>
-                        </thead>
-
-                        <tbody>
-
-                            {% for item in movimentacoes %}
-
-                                <tr>
-                                    <td>{{ item['data'] or '—' }}</td>
-
-                                    <td>
-                                        {{ item['horario_registro'] or '—' }}
-                                    </td>
-
-                                    <td>
-                                        {% if item['tipo'] == 'ENTRADA' %}
-                                            <span class="tipo-entrada">
-                                                ENTRADA
-                                            </span>
-                                        {% else %}
-                                            <span class="tipo-saida">
-                                                SAÍDA
-                                            </span>
-                                        {% endif %}
-                                    </td>
-
-                                    <td>{{ item['produto_nome'] or 'Produto removido' }}</td>
-                                    <td>{{ item['produto_codigo'] or '—' }}</td>
-                                    <td>{{ item['lote'] or '—' }}</td>
-                                    <td>{{ item['quantidade'] }}</td>
-                                    <td>{{ item['fornecedor_nome'] or '—' }}</td>
-                                    <td>{{ item['nota_fiscal'] or '—' }}</td>
-
-                                    <td>
-                                        {% if item['valor'] is not none %}
-                                            R$ {{ "%.2f"|format(item['valor']) }}
-                                        {% else %}
-                                            —
-                                        {% endif %}
-                                    </td>
-
-                                    <td>{{ item['observacoes'] or '—' }}</td>
-                                </tr>
-
-                            {% else %}
-
-                                <tr>
-                                    <td colspan="11" class="historico-vazio">
-                                        Nenhuma movimentação encontrada para esses filtros.
-                                    </td>
-                                </tr>
-
-                            {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-                <div class="historico-rodape">
-                    Registros encontrados:
-                    <strong>{{ movimentacoes|length }}</strong>
-                </div>
-
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="vazio">
+                                    Nenhuma movimentação encontrada.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
-        </main>
+            <footer class="rodape">
+                <span class="contador">
+                    Registros exibidos: {{ movimentacoes|length }}
+                </span>
 
-    </div>
+                <div class="acoes">
+                    {% if session.get('tipo') == 'admin' %}
+                        <form
+                            method="POST"
+                            action="{{ url_for('limpar_historico') }}"
+                            onsubmit="return confirm('ATENÇÃO: deseja realmente apagar todo o histórico de movimentações? Essa ação não poderá ser desfeita.');"
+                        >
+                            <button type="submit" class="botao perigo">
+                                Limpar histórico
+                            </button>
+                        </form>
+                    {% endif %}
 
+                    <a href="{{ url_for('inicio') }}" class="botao secundario">
+                        Voltar ao início
+                    </a>
+                </div>
+            </footer>
+        </section>
+    </main>
 </body>
 </html>

@@ -1,219 +1,206 @@
 
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Produto - Kaiko</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <title>Editar Produto | JC Sistema</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
-        .editar-container {
-            width: 92%;
-            max-width: 850px;
-            margin: 35px auto;
-        }
+        * { box-sizing: border-box; }
 
-        .editar-card {
-            background: rgba(255, 255, 255, 0.97);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        .editar-cabecalho {
-            background: linear-gradient(135deg, #1976ed, #1259c3);
-            color: white;
-            padding: 25px 30px;
-        }
-
-        .editar-cabecalho h1 {
-            margin: 0 0 8px;
-        }
-
-        .editar-cabecalho p {
+        body {
             margin: 0;
+            min-height: 100vh;
+            padding: 30px 16px;
+            background: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
-        .editar-formulario {
-            padding: 30px;
-        }
-
-        .editar-formulario .campo {
-            margin-bottom: 20px;
-        }
-
-        .editar-formulario input,
-        .editar-formulario select {
+        .container {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 9px;
-            font-size: 16px;
-            background: white;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 14px;
         }
 
-        .editar-acoes {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 25px;
+        .topo { margin-bottom: 28px; }
+
+        h1 {
+            margin: 0;
+            color: #ff8c00;
+            font-size: 26px;
         }
 
-        .editar-acoes button,
-        .editar-acoes a {
-            display: inline-block;
-            border: none;
-            border-radius: 9px;
-            padding: 13px 22px;
-            font-size: 15px;
+        .subtitulo {
+            margin: 8px 0 0;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .campo { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #292929;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus { border-color: #ff8c00; }
+
+        .dica {
+            display: block;
+            margin-top: 6px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
             text-decoration: none;
             cursor: pointer;
         }
 
-        .btn-atualizar {
-            background: #1976ed;
-            color: white;
+        .principal {
+            background: #ff8c00;
+            color: #111;
         }
 
-        .btn-voltar {
-            background: #e5e7eb;
-            color: #222;
+        .principal:hover { background: #ffa52b; }
+
+        .secundario {
+            background: #333;
+            color: #fff;
         }
 
-        @media (max-width: 600px) {
-            .editar-formulario {
-                padding: 20px;
-            }
+        .secundario:hover { background: #444; }
 
-            .editar-acoes {
-                flex-direction: column;
-            }
+        .mensagem {
+            padding: 12px;
+            margin-bottom: 18px;
+            background: #38251a;
+            color: #ffbd80;
+            border: 1px solid #75451f;
+            border-radius: 7px;
+            font-size: 14px;
+        }
 
-            .editar-acoes button,
-            .editar-acoes a {
-                text-align: center;
-            }
+        @media (max-width: 500px) {
+            .container { padding: 22px 18px; }
+            .botoes { flex-direction: column; }
+            .botao { width: 100%; }
         }
     </style>
 </head>
 
 <body>
-
-    <div class="pagina-cadastro">
-
-        <header class="menu">
-
-            <a href="/" class="logo-menu">
-                <img
-                    src="{{ url_for('static', filename='logo_kaiko.png') }}"
-                    alt="Kaiko"
-                >
-            </a>
-
-            <nav>
-                <a href="/cadastrar">📦 Cadastrar Produto</a>
-                <a href="/fornecedor">🏢 Cadastrar Fornecedor</a>
-                <a href="/entrada">📄 Entrada de Material</a>
-                <a href="/saida">📄 Saída de Material</a>
-                <a href="/estoque">🔍 Consultar Estoque</a>
-                <a href="/historico">📋 Histórico de Movimentações</a>
-            </nav>
-
+    <main class="container">
+        <header class="topo">
+            <h1>Editar Produto</h1>
+            <p class="subtitulo">Atualize as informações do material cadastrado.</p>
         </header>
 
-        <main class="editar-container">
+        {% with mensagens = get_flashed_messages() %}
+            {% if mensagens %}
+                {% for mensagem in mensagens %}
+                    <div class="mensagem">{{ mensagem }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-            <div class="editar-card">
-
-                <div class="editar-cabecalho">
-                    <h1>✏️ Editar Produto</h1>
-                    <p>Altere os dados cadastrais do produto.</p>
-                </div>
-
-                <form
-                    class="editar-formulario"
-                    method="POST"
-                    action="{{ url_for('editar', id=produto['id']) }}"
+        <form method="POST" action="{{ url_for('editar', id=produto.id) }}">
+            <div class="campo">
+                <label for="nome">Nome do produto *</label>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    value="{{ produto.nome }}"
+                    maxlength="150"
+                    required
                 >
-
-                    <div class="campo">
-                        <label for="codigo">Código do Produto *</label>
-
-                        <input
-                            type="text"
-                            id="codigo"
-                            name="codigo"
-                            value="{{ produto['codigo'] }}"
-                            required
-                        >
-                    </div>
-
-                    <div class="campo">
-                        <label for="nome">Nome do Produto *</label>
-
-                        <input
-                            type="text"
-                            id="nome"
-                            name="nome"
-                            value="{{ produto['nome'] }}"
-                            required
-                        >
-                    </div>
-
-                    <div class="campo">
-                        <label for="categoria">Categoria</label>
-
-                        <select id="categoria" name="categoria">
-                            <option value="">Selecione a categoria</option>
-
-                            {% for categoria in [
-                                'Higiene',
-                                'Limpeza',
-                                'Escritório',
-                                'Descartáveis',
-                                'Outros'
-                            ] %}
-
-                                <option
-                                    value="{{ categoria }}"
-                                    {% if produto['categoria'] == categoria %}
-                                        selected
-                                    {% endif %}
-                                >
-                                    {{ categoria }}
-                                </option>
-
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="editar-acoes">
-
-                        <button
-                            type="submit"
-                            class="btn-atualizar"
-                        >
-                            💾 Salvar Alterações
-                        </button>
-
-                        <a href="/estoque" class="btn-voltar">
-                            ↩ Voltar ao Estoque
-                        </a>
-
-                    </div>
-
-                </form>
-
             </div>
 
-        </main>
+            <div class="campo">
+                <label for="codigo">Código do produto *</label>
+                <input
+                    type="text"
+                    id="codigo"
+                    name="codigo"
+                    value="{{ produto.codigo }}"
+                    maxlength="80"
+                    required
+                >
+            </div>
 
-    </div>
+            <div class="campo">
+                <label for="quantidade">Quantidade em estoque</label>
+                <input
+                    type="number"
+                    id="quantidade"
+                    name="quantidade"
+                    value="{{ produto.quantidade }}"
+                    min="0"
+                    step="1"
+                    required
+                >
+                <small class="dica">
+                    Atenção: alterar manualmente essa quantidade pode afetar a conferência do histórico de movimentações.
+                </small>
+            </div>
 
+            <div class="campo">
+                <label for="lote">Lote (opcional)</label>
+                <input
+                    type="text"
+                    id="lote"
+                    name="lote"
+                    value="{{ produto.lote if produto.lote and produto.lote != 'SEM LOTE' else '' }}"
+                    maxlength="100"
+                    placeholder="Informe o lote, se houver"
+                >
+            </div>
+
+            <div class="botoes">
+                <button type="submit" class="botao principal">
+                    Salvar alterações
+                </button>
+
+                <a href="{{ url_for('estoque') }}" class="botao secundario">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </main>
 </body>
 </html>
