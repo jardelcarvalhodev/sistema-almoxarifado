@@ -43,7 +43,7 @@
 
         h1 {
             margin: 0;
-            color: #ff8c00;
+            color: #2478e5;
             font-size: 27px;
         }
 
@@ -54,7 +54,10 @@
         }
 
         .botao {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 38px;
             padding: 10px 14px;
             border: none;
             border-radius: 7px;
@@ -98,7 +101,7 @@
             outline: none;
         }
 
-        .pesquisa input:focus { border-color: #ff8c00; }
+        .pesquisa input:focus { border-color: #2478e5; }
 
         .tabela-wrapper {
             width: 100%;
@@ -123,7 +126,7 @@
 
         th {
             background: #292929;
-            color: #ff8c00;
+            color: #2478e5;
             white-space: nowrap;
         }
 
@@ -159,9 +162,13 @@
         }
 
         .contador {
-            color: #aaa;
+            color: #60758f;
             font-size: 13px;
         }
+
+        .coluna-acoes form { margin: 0; }
+        .botao.perigo { background: #e63950; color: #fff; }
+        .botao.perigo:hover { background: #c9273d; }
 
         @media (max-width: 600px) {
             .painel { padding: 18px 14px; }
@@ -222,6 +229,7 @@
                             <th>Telefone</th>
                             <th>E-mail</th>
                             <th>Endereço</th>
+                            {% if session.get('perfil') == 'admin' %}<th>Ações</th>{% endif %}
                         </tr>
                     </thead>
 
@@ -234,10 +242,17 @@
                                 <td>{{ fornecedor.telefone or '—' }}</td>
                                 <td>{{ fornecedor.email or '—' }}</td>
                                 <td>{{ fornecedor.endereco or '—' }}</td>
+                                {% if session.get('perfil') == 'admin' %}
+                                    <td class="coluna-acoes">
+                                        <form method="POST" action="{{ url_for('excluir_fornecedor', id=fornecedor.id) }}" onsubmit="return confirm('Tem certeza de que deseja excluir este fornecedor? Esta ação não poderá ser desfeita.');">
+                                            <button type="submit" class="botao perigo">Excluir</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="6" class="vazio">
+                                <td colspan="{{ 7 if session.get('perfil') == 'admin' else 6 }}" class="vazio">
                                     Nenhum fornecedor encontrado.
                                 </td>
                             </tr>

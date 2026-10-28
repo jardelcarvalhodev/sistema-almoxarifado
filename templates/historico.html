@@ -214,10 +214,25 @@
 
         .acoes {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            flex-wrap: nowrap;
             gap: 10px;
-            align-items: center;
+            align-items: flex-end;
+            min-width: 132px;
         }
+
+        .acoes .botao {
+            width: 118px !important;
+            min-height: 36px !important;
+            padding: 9px 10px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .acoes form { width: 118px; }
+        .acoes form .botao { width: 100% !important; }
 
         @media (max-width: 600px) {
             .painel { padding: 18px 14px; }
@@ -225,8 +240,8 @@
             .topo > a { width: 100%; }
             .filtros { flex-direction: column; align-items: stretch; }
             .campo { width: 100%; }
-            .acoes { flex-direction: column; align-items: stretch; }
-            .acoes .botao { width: 100%; }
+            .acoes { flex-direction: column; align-items: flex-end; width: 100%; }
+            .acoes .botao, .acoes form { width: 118px !important; }
         }
     </style>
 

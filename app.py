@@ -614,6 +614,33 @@ def fornecedor():
     return render_template("fornecedor.html")
 
 
+@app.route("/fornecedor/excluir/<int:id>", methods=["POST"])
+@administrador_obrigatorio
+def excluir_fornecedor(id):
+    conexao = conectar_banco()
+    try:
+        fornecedor = conexao.execute("SELECT id, nome FROM fornecedores WHERE id = ?", (id,)).fetchone()
+        if fornecedor is None:
+            flash("Fornecedor não encontrado.")
+            return redirect(url_for("relatorio_fornecedores"))
+
+        # Não exclui fornecedores que já estão vinculados a movimentações,
+        # para preservar a integridade do histórico.
+        vinculado = conexao.execute(
+            "SELECT 1 FROM movimentacoes WHERE fornecedor_id = ? LIMIT 1", (id,)
+        ).fetchone()
+        if vinculado:
+            flash("Este fornecedor está vinculado ao histórico de movimentações e não pode ser excluído.")
+            return redirect(url_for("relatorio_fornecedores"))
+
+        conexao.execute("DELETE FROM fornecedores WHERE id = ?", (id,))
+        conexao.commit()
+        flash("Fornecedor excluído com sucesso.")
+    finally:
+        conexao.close()
+    return redirect(url_for("relatorio_fornecedores"))
+
+
 @app.route("/historico")
 def historico():
     busca = request.args.get("busca", "").strip()
